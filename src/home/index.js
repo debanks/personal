@@ -173,7 +173,7 @@ class Home extends Component {
                     <Element name="education-element">
                         <Grid className="education">
                             <Row>
-                                <Col md={3}><img src="/images/ucsd.jpg"/></Col>
+                                <Col md={3}><img src="/images/UCSD.jpg"/></Col>
                                 <Col md={9}>
                                     <h2>Bachelor's in Math and Computer Science</h2>
                                     <h3>University of California - San Diego (2008 - 2012)</h3>
