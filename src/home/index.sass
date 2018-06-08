@@ -1,0 +1,140 @@
+@import '../_variables.sass'
+
+.HomeComponent
+  .main-banner
+    background: #3262a6
+    padding: 90px 7% 60px 7%
+    text-align: center
+    img
+      border: 7px solid #ffffff
+      border-radius: 50%
+    hr
+      width: 40%
+      border-top: 3px solid #eee
+    .my-name
+      font-size: 44px
+      color: #f2f2f2
+    .my-desc
+      font-size: 30px
+      color: #e1e1e1
+  .about-me
+    padding: 90px 7% 80px 7%
+    background: #f3f5f7
+    color: #121314
+    position: relative
+    h3
+      margin-left: 25px
+      text-decoration: underline
+    ul
+      li
+        font-size: 18px
+        line-height: 28px
+    .image-conts
+      text-align: center
+    .carousel-image
+      height: 400px
+    h2
+      font-size: 44px
+    p
+      font-size: 22px
+      line-height: 40px
+    .game-buttons
+      .btn
+        margin-right: 10px
+        font-size: 20px
+  .work-timeline
+    background: #232425
+    position: relative
+    .timeline
+      width: 90%
+      margin: 0 auto
+      max-width: 1000px
+    .created-at
+      color: #b6b6b6
+      font-size: 14px
+      margin-bottom: -3px
+  .education
+    padding: 70px 7%
+    background: #f3f5f7
+    color: #121314
+    h2
+      margin-top: 0
+    img
+      width: 100%
+      margin: 0 auto 10px auto
+      box-shadow: #000000 0 4px 8px, #000000 0 0 0 1px
+    p
+      font-size: 18px
+      line-height: 30px
+  .projects-container
+    color: #f2f2f2
+    background: #243546
+    padding: 20px 7% 40px 7%
+    position: relative
+    h2
+      text-align: center
+      font-size: 48px
+      margin-bottom: 30px
+    .project
+      background: #445566
+      cursor: pointer
+      margin-bottom: 5px
+      .project-top
+        position: relative
+        padding-left: 70px
+        padding-right: 20px
+      .project-icon
+        position: absolute
+        top: 10px
+        left: 10px
+        width: 50px
+        &.circle
+          border-radius: 50%
+      .project-content
+        border-top: 1px solid #243546
+        padding: 20px 5%
+        font-size: 18px
+        line-height: 28px
+        img
+          max-width: 100%
+          max-height: 200px
+          margin: 0 auto 10px auto
+          &.shadow
+            box-shadow: #000000 0 4px 8px, #000000 0 0 0 1px
+        .buttons
+          margin-top: 10px
+          .btn
+            margin-right: 5px
+      .inline-grid
+        padding: 10px 0
+        .title
+          font-size: 38px
+        .info-value
+          font-size: 26px
+        .info-label
+          font-size: 14px
+          line-height: 16px
+      .project-toggle
+        font-size: 22px
+        text-align: center
+        position: relative
+        border-top: 1px solid #243546
+        img
+          position: absolute
+          top: 4px
+          left: 50%
+          margin-left: -60px
+          height: 15px
+          width: 120px
+      &:hover
+        background: #526272
+  .attach-top
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+  .attach-bottom
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%

@@ -1,0 +1,89 @@
+@import '../_variables.sass'
+
+.HeaderComponent
+  .container
+    max-width: none
+  .navbar-collapse.in
+    background: $header
+  .navbar
+    z-index: 12
+    background: $header
+    color: #f7f7f7
+    width: 100%
+    position: fixed
+    left: 0
+    top: 0
+    height: 45px
+    min-height: 45px
+    border-radius: 0
+    border: 0
+    border-bottom: 1px solid $accent
+    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.4)
+    .close-nav
+      margin-left: 30px
+    .navbar-nav > li
+      a
+        cursor: pointer
+        line-height: 40px
+        font-size: 16px
+        box-sizing: border-box
+        color: #f7f7f7
+        padding: 0 15px
+        margin-left: -1px
+        border-bottom: 5px solid transparent
+        &:focus
+          color: #f7f7f7
+          background: $header
+        &:hover, &:active, &.active
+          background: $darkAccent
+          color: #ffffff
+      &.green > a:hover, &.green.active > a
+        border-bottom: 5px solid $green
+      &.red > a:hover, &.red.active > a
+        border-bottom: 5px solid $bootstrap-red
+      &.blue > a:hover, &.blue.active > a
+        border-bottom: 5px solid $blue
+      &.purple > a:hover, &.purple.active > a
+        border-bottom: 5px solid #bb11aa
+    .no-divider
+      li > a
+        border-left: 0
+        border-right: 0
+      .btn
+        margin-top: 4px
+        margin-right: 10px
+        padding: 5px 10px
+        color: #f2f2f2
+        @media screen and (max-width: 400px)
+          width: 90%
+          margin-left: 5%
+    .user-icon
+      height: 20px
+      border-radius: 50%
+    .navbar-brand
+      cursor: pointer
+      font-size: 28px
+      margin-left: 10px !important
+      line-height: 40px
+      margin-top: 3px
+      height: 38px
+      color: #f2f2f2
+      padding: 0
+      a
+        color: #f2f2f2
+        &:hover
+          color: #f2f2f2
+      img
+        height: 35px
+        width: 35px
+        display: inline-block
+        margin-top: -3px
+        border-radius: 50%
+      &:hover
+        color: #ffffff
+      &:active
+        color: #ffffff
+    .navbar-toggle
+      margin-top: 2px
+      margin-bottom: 2px
+      color: #f2f2f2

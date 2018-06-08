@@ -1,0 +1,124 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins|Nunito+Sans)
+@import '_mixins.scss'
+@import '_variables.sass'
+
+html,body,#root
+  min-height: 100%
+  height: 100%
+
+body
+  margin: 0
+  padding: 0
+  font-family: 'Poppins', sans-serif
+  background: $background
+
+.align-right
+  text-align: right
+.align-center
+  text-align: center
+
+.capitalize
+  text-transform: capitalize
+
+.spin
+  -webkit-animation: spin 4s linear infinite
+  -moz-animation: spin 4s linear infinite
+  animation: spin 4s linear infinite
+
+.wiggle
+  -webkit-animation: wiggle 2s linear infinite
+  -moz-animation: wiggle 2s linear infinite
+  animation: wiggle 2s linear infinite
+
+.container
+  width: 100%
+
+a:hover
+  text-decoration: none !important
+
+#root > div
+  position: relative
+  min-height: 100%
+  padding-bottom: 300px
+
+
+.numbers
+  font-family: 'Nunito Sans'
+
+.main-component
+  .content
+    padding: 20px 3%
+
+.modal
+  .dropdown-menu
+    max-height: 300px
+    overflow: auto
+.form-control, .btn
+  border-radius: 0
+  box-shadow: none
+.margin-right-10
+  margin-right: 10px
+
+.main-content
+  padding: 0 5%
+a
+  color: inherit
+
+.modal,.tooltip
+  z-index: 30001
+
+.no-negative-margin
+  margin-left: 0
+  margin-right: 0
+
+.clickable
+  cursor: pointer
+
+.strobe-red
+  -webkit-animation: strobe-red 4s linear infinite
+  -moz-animation: strobe-red 4s linear infinite
+  animation: strobe-red 4s linear infinite
+
+.green
+  color: $green
+.red
+  color: $bootstrap-red
+
+@-moz-keyframes spin
+  100%
+    -moz-transform: rotate(360deg)
+@-webkit-keyframes spin
+  100%
+    -webkit-transform: rotate(360deg)
+@keyframes spin
+  100%
+    -webkit-transform: rotate(360deg)
+    transform: rotate(360deg)
+
+@-moz-keyframes wiggle
+  0%, 8%, 16%, 24%, 100%
+    -webkit-transform: rotate(0deg)
+    transform: rotate(0deg)
+  4%, 12%, 20%
+    -webkit-transform: rotate(-45deg)
+    transform: rotate(-45deg)
+@-webkit-keyframes wiggle
+  0%, 8%, 16%, 24%, 100%
+    -webkit-transform: rotate(0deg)
+    transform: rotate(0deg)
+  4%, 12%, 20%
+    -webkit-transform: rotate(-45deg)
+    transform: rotate(-45deg)
+@keyframes wiggle
+  0%, 8%, 16%, 24%, 100%
+    -webkit-transform: rotate(0deg)
+    transform: rotate(0deg)
+  4%, 12%, 20%
+    -webkit-transform: rotate(-45deg)
+    transform: rotate(-45deg)
+
+@keyframes strobe-red
+  50%
+    background: lighten($bootstrap-red, 10%)
+  100%
+    background: $bootstrap-red
