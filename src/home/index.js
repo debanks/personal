@@ -271,7 +271,7 @@ class Home extends Component {
                                                         the most streamlined and presents nearly everything on a single page for quick access.
                                                         <div className="buttons">
                                                             <Button bsStyle="primary" href="/"><FaLink/> Website</Button>
-                                                            <Button><FaGithub/> Github</Button>
+                                                            <Button href="https://github.com/debanks/personal"><FaGithub/> Github</Button>
                                                         </div>
                                                     </Col>
                                                 </Row>
