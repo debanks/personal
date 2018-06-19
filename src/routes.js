@@ -6,6 +6,7 @@ import App from './app';
 import Home from './home';
 import ReactGA from 'react-ga';
 import Blog from './blog';
+import Fortnite from './fortnite';
 import {Article as FortniteArticle} from './blog/Articles/fortnite-pubg';
 import {Article as CompetitiveBattleroyale} from './blog/Articles/competitive-battleroyale';
 
@@ -28,6 +29,7 @@ const Routes = (props) => (
         <Route component={App}>
             <Route path="/" component={Home}/>
             <Route path="/blog" component={Blog}/>
+            <Route path="/fortnite" component={Fortnite}/>
             <Route path="/blog/fortnite-pubg" component={FortniteArticle}/>
             <Route path="/blog/competitive-battleroyale" component={CompetitiveBattleroyale}/>
         </Route>

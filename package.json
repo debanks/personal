@@ -73,7 +73,8 @@
     "react-animate-on-change": "1.0.1",
     "react-scroll": "1.7.9",
     "react-event-timeline": "1.5.3",
-    "react-dimensions": "1.3.1"
+    "react-dimensions": "1.3.1",
+    "react-lineto": "3.1.2"
   },
   "scripts": {
     "start": "node scripts/start.js",
