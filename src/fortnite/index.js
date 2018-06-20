@@ -8,6 +8,7 @@ import FaMapPin from 'react-icons/lib/fa/map-marker';
 import FaClose from 'react-icons/lib/fa/close';
 import FaCircle from 'react-icons/lib/fa/circle';
 import LineTo from 'react-lineto';
+import ReactHeatmap from 'react-heatmap';
 import './index.sass';
 
 class Fortnite extends Component {
@@ -46,66 +47,21 @@ class Fortnite extends Component {
                 kills: 0,
                 deaths: 0
             },
+            killHeatmap: [],
+            deathHeatmap: [],
+            placeHeatmap: [],
+            maxKd: 100,
             showMatch: false,
             selected: {},
             match: {},
             coords: 'plane_start',
-            form: false
+            form: false,
+            showHeatmap: false
         };
 
         fetch('http://api.davisbanks.com/api/fortnite')
             .then((res) => res.json())
-            .then((data) => {
-
-                let overall = {
-                    matches: 0,
-                    wins: 0,
-                    kills: 0,
-                    deaths: 0
-                };
-                let stats = {
-                    Solo: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    },
-                    Duo: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    },
-                    Squad: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    }
-                };
-
-                for (let key in data.stats) {
-                    stats[data.stats[key].type].kills = parseInt(data.stats[key].kills, 10);
-                    stats[data.stats[key].type].matches = parseInt(data.stats[key].matches, 10);
-                    stats[data.stats[key].type].deaths = parseInt(data.stats[key].deaths, 10);
-                    stats[data.stats[key].type].wins = parseInt(data.stats[key].wins, 10);
-                    stats[data.stats[key].type].place = parseFloat(data.stats[key].place, 10);
-
-                    overall.kills += parseInt(data.stats[key].kills, 10);
-                    overall.matches += parseInt(data.stats[key].matches, 10);
-                    overall.deaths += parseInt(data.stats[key].deaths, 10);
-                    overall.wins += parseInt(data.stats[key].wins, 10);
-                }
-
-                this.setState({
-                    matches: data.matches,
-                    stats: stats,
-                    overall: overall
-                });
-            });
+            .then((data) => this.processData(data));
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submit = this.submit.bind(this);
@@ -114,6 +70,83 @@ class Fortnite extends Component {
         this.getMarkerStyle = this.getMarkerStyle.bind(this);
         this.getMarkerStyle2 = this.getMarkerStyle2.bind(this);
         this.updateMatch = this.updateMatch.bind(this);
+        this.processData = this.processData.bind(this);
+    }
+
+    processData(data) {
+
+        let overall = {
+            matches: 0,
+            wins: 0,
+            kills: 0,
+            deaths: 0
+        };
+
+        let killHeatmap = [], placeHeatmap = [], deathHeatmap = [];
+
+        let stats = {
+            Solo: {
+                matches: 0,
+                wins: 0,
+                kills: 0,
+                deaths: 0,
+                place: 0
+            },
+            Duo: {
+                matches: 0,
+                wins: 0,
+                kills: 0,
+                deaths: 0,
+                place: 0
+            },
+            Squad: {
+                matches: 0,
+                wins: 0,
+                kills: 0,
+                deaths: 0,
+                place: 0
+            }
+        };
+
+        for (let key in data.stats) {
+            stats[data.stats[key].type].kills = parseInt(data.stats[key].kills, 10);
+            stats[data.stats[key].type].matches = parseInt(data.stats[key].matches, 10);
+            stats[data.stats[key].type].deaths = parseInt(data.stats[key].deaths, 10);
+            stats[data.stats[key].type].wins = parseInt(data.stats[key].wins, 10);
+            stats[data.stats[key].type].place = parseFloat(data.stats[key].place, 10);
+
+            overall.kills += parseInt(data.stats[key].kills, 10);
+            overall.matches += parseInt(data.stats[key].matches, 10);
+            overall.deaths += parseInt(data.stats[key].deaths, 10);
+            overall.wins += parseInt(data.stats[key].wins, 10);
+        }
+
+        for (let key in data.matches) {
+            killHeatmap.push({
+                x: parseFloat(data.matches[key].drop_x) * 100,
+                y: parseFloat(data.matches[key].drop_y) * 100,
+                value: data.matches[key].kills - data.matches[key].died
+            });
+            placeHeatmap.push({
+                x: parseFloat(data.matches[key].drop_x) * 100,
+                y: parseFloat(data.matches[key].drop_y) * 100,
+                value: 100 - data.matches[key].place
+            });
+            deathHeatmap.push({
+                x: parseFloat(data.matches[key].end_x) * 100,
+                y: parseFloat(data.matches[key].end_y) * 100,
+                value: data.matches[key].died
+            });
+        }
+
+        this.setState({
+            matches: data.matches,
+            stats: stats,
+            overall: overall,
+            killHeatmap: killHeatmap,
+            placeHeatmap: placeHeatmap,
+            deathHeatmap: deathHeatmap
+        });
     }
 
     formatTimeString(timeString) {
@@ -234,57 +267,7 @@ class Fortnite extends Component {
             body: JSON.stringify(this.state.match)
         })
             .then((res) => res.json())
-            .then((data) => {
-                let overall = {
-                    matches: 0,
-                    wins: 0,
-                    kills: 0,
-                    deaths: 0
-                };
-                let stats = {
-                    Solo: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    },
-                    Duo: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    },
-                    Squad: {
-                        matches: 0,
-                        wins: 0,
-                        kills: 0,
-                        deaths: 0,
-                        place: 0
-                    }
-                };
-
-                for (let key in data.stats) {
-                    stats[data.stats[key].type].kills = parseInt(data.stats[key].kills, 10);
-                    stats[data.stats[key].type].matches = parseInt(data.stats[key].matches, 10);
-                    stats[data.stats[key].type].deaths = parseInt(data.stats[key].deaths, 10);
-                    stats[data.stats[key].type].wins = parseInt(data.stats[key].wins, 10);
-                    stats[data.stats[key].type].place = parseFloat(data.stats[key].place, 10);
-
-                    overall.kills += parseInt(data.stats[key].kills, 10);
-                    overall.matches += parseInt(data.stats[key].matches, 10);
-                    overall.deaths += parseInt(data.stats[key].deaths, 10);
-                    overall.wins += parseInt(data.stats[key].wins, 10);
-                }
-
-                this.setState({
-                    matches: data.matches,
-                    stats: stats,
-                    overall: overall,
-                    form: false
-                });
-            });
+            .then((data) => this.processData(data));
     }
 
     formatPlace(place) {
@@ -414,6 +397,11 @@ class Fortnite extends Component {
                             </Col>
                         </Row>
                     </Grid>
+                    <div className="buttons">
+                        <Button onClick={() => this.setState({showHeatmap: 'kill'})}>Drop Kill Heatmap</Button>
+                        <Button onClick={() => this.setState({showHeatmap: 'place'})}>Drop Place Heatmap</Button>
+                        <Button onClick={() => this.setState({showHeatmap: 'death'})}>Match End Heatmap</Button>
+                    </div>
                     <div className="matches">
                         <div className="match-header">
                             <Grid>
@@ -440,6 +428,24 @@ class Fortnite extends Component {
                             </div>
                         }, this)}
                     </div>
+                    {this.state.showHeatmap === 'kill' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
+                        <div className="heatmap">
+                            <img src="/images/map.png"/>
+                            <ReactHeatmap max={5} data={this.state.killHeatmap}/>
+                        </div>
+                    </div>}
+                    {this.state.showHeatmap === 'place' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
+                        <div className="heatmap">
+                            <img src="/images/map.png"/>
+                            <ReactHeatmap max={5} data={this.state.placeHeatmap}/>
+                        </div>
+                    </div>}
+                    {this.state.showHeatmap === 'death' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
+                        <div className="heatmap">
+                            <img src="/images/map.png"/>
+                            <ReactHeatmap max={5} data={this.state.deathHeatmap}/>
+                        </div>
+                    </div>}
                     {this.state.form && <div className="match-form" onClick={() => this.setState({form: false})}>
                         <form onSubmit={this.submit} onClick={(e) => e.stopPropagation()}>
                             <Grid>
