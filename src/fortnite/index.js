@@ -218,9 +218,53 @@ class Fortnite extends Component {
         })
             .then((res) => res.json())
             .then((data) => {
+                let overall = {
+                    matches: 0,
+                    wins: 0,
+                    kills: 0,
+                    deaths: 0
+                };
+                let stats = {
+                    Solo: {
+                        matches: 0,
+                        wins: 0,
+                        kills: 0,
+                        deaths: 0,
+                        place: 0
+                    },
+                    Duo: {
+                        matches: 0,
+                        wins: 0,
+                        kills: 0,
+                        deaths: 0,
+                        place: 0
+                    },
+                    Squad: {
+                        matches: 0,
+                        wins: 0,
+                        kills: 0,
+                        deaths: 0,
+                        place: 0
+                    }
+                };
+
+                for (let key in data.stats) {
+                    stats[data.stats[key].type].kills = parseInt(data.stats[key].kills, 10);
+                    stats[data.stats[key].type].matches = parseInt(data.stats[key].matches, 10);
+                    stats[data.stats[key].type].deaths = parseInt(data.stats[key].deaths, 10);
+                    stats[data.stats[key].type].wins = parseInt(data.stats[key].wins, 10);
+                    stats[data.stats[key].type].place = parseFloat(data.stats[key].place, 10);
+
+                    overall.kills += parseInt(data.stats[key].kills, 10);
+                    overall.matches += parseInt(data.stats[key].matches, 10);
+                    overall.deaths += parseInt(data.stats[key].deaths, 10);
+                    overall.wins += parseInt(data.stats[key].wins, 10);
+                }
+
                 this.setState({
                     matches: data.matches,
-                    stats: data.stats,
+                    stats: stats,
+                    overall: overall,
                     form: false
                 });
             });
