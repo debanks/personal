@@ -113,6 +113,7 @@ class Fortnite extends Component {
         this.trackPosition = this.trackPosition.bind(this);
         this.getMarkerStyle = this.getMarkerStyle.bind(this);
         this.getMarkerStyle2 = this.getMarkerStyle2.bind(this);
+        this.updateMatch = this.updateMatch.bind(this);
     }
 
     formatTimeString(timeString) {
@@ -159,7 +160,15 @@ class Fortnite extends Component {
         let pos = ReactDOM.findDOMNode(this.image).getBoundingClientRect();
         match[this.state.coords + '_x'] = e.nativeEvent.offsetX / pos.width;
         match[this.state.coords + '_y'] = e.nativeEvent.offsetY / pos.height;
-        this.setState({match: match});
+
+        let next = 'end';
+        if (this.state.coords === 'plane_start') {
+            next = 'plane_end';
+        } else if (this.state.coords === 'plane_end') {
+            next = 'drop';
+        }
+
+        this.setState({match: match, coords: next});
     }
 
     getMarkerStyle(match, label) {
@@ -182,6 +191,14 @@ class Fortnite extends Component {
             left: parseFloat(match[label + '_x']) * pos.width - 15.0,
             top: parseFloat(match[label + '_y']) * pos.height - 15.0
         }
+    }
+
+    updateMatch(field, value) {
+
+        let state = this.state;
+        state.match[field] = value;
+
+        this.setState(state);
     }
 
     addMatch() {
@@ -270,6 +287,18 @@ class Fortnite extends Component {
             });
     }
 
+    formatPlace(place) {
+        if (place == 1) {
+            return '1st';
+        } else if (place == 2) {
+            return '2nd';
+        } else if (place == 3) {
+            return '3rd';
+        } else {
+            return place + 'th';
+        }
+    }
+
     render() {
         const {className, content, season, features, width} = this.props;
 
@@ -289,7 +318,7 @@ class Fortnite extends Component {
 
         return (
             <DocumentMeta {...meta}>
-                <div className="Fortnite">
+                <div className="Fortnite" style={this.state.showMatch === true ? {height: '400px', overflow: 'hidden'} : {}}>
                     <Grid>
                         <Row className="top-bar">
                             <Col sm={3}>
@@ -391,9 +420,9 @@ class Fortnite extends Component {
                                 <Row>
                                     <Col xs={3}>Time</Col>
                                     <Col xs={3}>Type</Col>
-                                    <Col xs={2} className="align-right">Place</Col>
-                                    <Col xs={2} className="align-right">Kills</Col>
                                     <Col xs={2} className="align-right">Died</Col>
+                                    <Col xs={2} className="align-right">Kills</Col>
+                                    <Col xs={2} className="align-right">Place</Col>
                                 </Row>
                             </Grid>
                         </div>
@@ -403,16 +432,16 @@ class Fortnite extends Component {
                                     <Row>
                                         <Col xs={3}>{this.formatTimeString(match.created_at)}</Col>
                                         <Col xs={3}>{match.type}</Col>
-                                        <Col xs={2} className="align-right">{match.place}</Col>
-                                        <Col xs={2} className="align-right">{match.kills}</Col>
                                         <Col xs={2} className="align-right">{match.died}</Col>
+                                        <Col xs={2} className="align-right">{match.kills}</Col>
+                                        <Col xs={2} className="align-right">{this.formatPlace(match.place)}</Col>
                                     </Row>
                                 </Grid>
                             </div>
                         }, this)}
                     </div>
-                    {this.state.form && <div className="match-form">
-                        <form onSubmit={this.submit}>
+                    {this.state.form && <div className="match-form" onClick={() => this.setState({form: false})}>
+                        <form onSubmit={this.submit} onClick={(e) => e.stopPropagation()}>
                             <Grid>
                                 <Row>
                                     <Col sm={6}>
@@ -422,10 +451,10 @@ class Fortnite extends Component {
                                     <Col sm={6}>
                                         <label htmlFor="type">Game Type</label>
                                         <DropdownButton title={this.state.match.type}>
-                                            <MenuItem onClick={() => this.setState({type: 'Solo'})}>Solo</MenuItem>
-                                            <MenuItem onClick={() => this.setState({type: 'Duo'})}>Duo</MenuItem>
-                                            <MenuItem onClick={() => this.setState({type: 'Squad'})}>Squad</MenuItem>
-                                            <MenuItem onClick={() => this.setState({type: 'LTM'})}>LTM</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('type', 'Solo')}>Solo</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('type', 'Duo')}>Duo</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('type', 'Squad')}>Squad</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('type', 'LTM')}>LTM</MenuItem>
                                         </DropdownButton>
                                     </Col>
                                 </Row>
@@ -442,16 +471,8 @@ class Fortnite extends Component {
                                     <Col sm={4}>
                                         <label htmlFor="Died">Died</label>
                                         <DropdownButton title={this.state.match.died === 1 ? 'Yes' : 'No'}>
-                                            <MenuItem onClick={() => {
-                                                let match = this.state.match;
-                                                match.died = 1;
-                                                this.setState({match: match})
-                                            }}>Yes</MenuItem>
-                                            <MenuItem onClick={() => {
-                                                let match = this.state.match;
-                                                match.died = 0;
-                                                this.setState({match: match})
-                                            }}>No</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('died', 1)}>Yes</MenuItem>
+                                            <MenuItem onClick={() => this.updateMatch('died', 0)}>No</MenuItem>
                                         </DropdownButton>
                                     </Col>
                                 </Row>
@@ -466,30 +487,47 @@ class Fortnite extends Component {
                                                 <Button onClick={() => this.setState({coords: 'end'})} bsStyle={this.state.coords === 'end' ? 'primary' : 'default'}>End Location</Button>
                                             </ButtonGroup>
                                         </div>
-                                        <div ref={image => this.image = image} className="image-coords" onClick={this.trackPosition}>
+                                        <div ref={image => this.image = image} className="image-coords">
                                             <img src="/images/map.png"/>
                                             <div className="plane_start marker" style={this.getMarkerStyle(this.state.match, 'plane_start')}><FaCircle/></div>
                                             <div className="plane_end marker" style={this.getMarkerStyle(this.state.match, 'plane_end')}><FaBullseye/></div>
                                             <div className="drop marker" style={this.getMarkerStyle(this.state.match, 'drop')}><FaMapPin/></div>
                                             <div className="end marker" style={this.getMarkerStyle(this.state.match, 'end')}><FaClose/></div>
                                             <LineTo from="plane_start" to="plane_end" zIndex={500} within="image-coords" borderColor="#fff" borderWidth={3}/>
+                                            <div className="click-space" onClick={this.trackPosition}></div>
                                         </div>
                                     </Col>
                                 </Row>
                             </Grid>
-                            <Button onClick={this.submit} bsStyle="success" className="form-btn">Submit</Button>
+                            <Button onClick={this.submit} bsStyle="success" className="form-btn">SUBMIT</Button>
                         </form>
                     </div>}
                     <Fade in={this.state.showMatch} onClick={() => this.setState({showMatch: false})}>
                         <div className="match-form">
                             <div className="the-match">
+                                <Grid className="match-header">
+                                    <Row>
+                                        <Col xs={4}>
+                                            <div className="match-label">Time</div>
+                                            <div className="match-text">{this.state.selected.created_at ? this.formatTimeString(this.state.selected.created_at) : ''}</div>
+                                        </Col>
+                                        <Col xs={4} className="align-right">
+                                            <div className="match-label">Kills</div>
+                                            <div className="match-text">{this.state.selected.kills}</div>
+                                        </Col>
+                                        <Col xs={4} className="align-right">
+                                            <div className="match-label">Place</div>
+                                            <div className="match-text">{this.formatPlace(this.state.selected.place)}</div>
+                                        </Col>
+                                    </Row>
+                                </Grid>
                                 <div className="image-coords2" ref={image2 => this.image2 = image2}>
                                     <img src="/images/map.png"/>
                                     <div className="plane_start2 marker" style={this.getMarkerStyle2(this.state.selected, 'plane_start')}><FaCircle/></div>
                                     <div className="plane_end2 marker" style={this.getMarkerStyle2(this.state.selected, 'plane_end')}><FaBullseye/></div>
                                     <div className="drop marker" style={this.getMarkerStyle2(this.state.selected, 'drop')}><FaMapPin/></div>
                                     <div className="end marker" style={this.getMarkerStyle2(this.state.selected, 'end')}><FaClose/></div>
-                                    <LineTo from="plane_start2" to="plane_end2" zIndex={500} within="image-coords2" borderColor="#fff" borderWidth={3}/>
+                                    {this.state.showMatch && <LineTo from="plane_start2" to="plane_end2" zIndex={500} within="image-coords2" borderColor="#fff" borderWidth={3}/>}
                                 </div>
                             </div>
                         </div>
