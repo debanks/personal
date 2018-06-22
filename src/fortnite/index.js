@@ -50,13 +50,15 @@ class Fortnite extends Component {
             killHeatmap: [],
             deathHeatmap: [],
             placeHeatmap: [],
-            maxKd: 100,
             showMatch: false,
             selected: {},
             match: {},
             coords: 'plane_start',
             form: false,
-            showHeatmap: false
+            showHeatmap: false,
+            killMax: 100,
+            placeMax: 100,
+            deathMax: 1000
         };
 
         fetch('http://api.davisbanks.com/api/fortnite')
@@ -71,6 +73,7 @@ class Fortnite extends Component {
         this.getMarkerStyle2 = this.getMarkerStyle2.bind(this);
         this.updateMatch = this.updateMatch.bind(this);
         this.processData = this.processData.bind(this);
+        this.processHeatmaps = this.processHeatmaps.bind(this);
     }
 
     processData(data) {
@@ -121,31 +124,112 @@ class Fortnite extends Component {
             overall.wins += parseInt(data.stats[key].wins, 10);
         }
 
-        for (let key in data.matches) {
-            killHeatmap.push({
-                x: parseFloat(data.matches[key].drop_x) * 100,
-                y: parseFloat(data.matches[key].drop_y) * 100,
-                value: data.matches[key].kills - data.matches[key].died
-            });
-            placeHeatmap.push({
-                x: parseFloat(data.matches[key].drop_x) * 100,
-                y: parseFloat(data.matches[key].drop_y) * 100,
-                value: 100 - data.matches[key].place
-            });
-            deathHeatmap.push({
-                x: parseFloat(data.matches[key].end_x) * 100,
-                y: parseFloat(data.matches[key].end_y) * 100,
-                value: data.matches[key].died
-            });
-        }
+        this.processHeatmaps(data.matches);
 
         this.setState({
             matches: data.matches,
             stats: stats,
             overall: overall,
+            form: false
+        });
+    }
+
+    processHeatmaps(data) {
+        let sectionPercent = 5;
+        let hmData = [];
+        let deData = [];
+        let sections = 100 / sectionPercent;
+        let xSection = 0, ySection = 0;
+        let killHeatmap = [], placeHeatmap = [], deathHeatmap = [];
+        let killMax = 0, placeMax = 0, deathMax = 0;
+
+        for (let i = 0; i < sections; i++) {
+            hmData[i] = [];
+            deData[i] = [];
+            for (let j = 0; j < sections; j++) {
+                hmData[i][j] = {
+                    matches: 0,
+                    kills: 0,
+                    deaths: 0,
+                    totalPlace: 0
+                };
+                deData[i][j] = {
+                    matches: 0,
+                    kills: 0,
+                    deaths: 0,
+                    totalPlace: 0
+                };
+            }
+        }
+
+        for (let i = 0; i < data.length; i++) {
+            xSection = Math.floor(data[i].drop_x * 100 / sectionPercent);
+            ySection = Math.floor(data[i].drop_y * 100 / sectionPercent);
+
+            let place = parseInt(data[i].place, 10);
+            if (data[i].type === 'Squad') {
+                place = (32 - place) / 32;
+            } else if (data[i].type === 'Duo') {
+                place = (50 - place) / 50;
+            } else {
+                place = (100 - place) / 100;
+            }
+
+            hmData[xSection][ySection].matches++;
+            hmData[xSection][ySection].kills += parseInt(data[i].kills, 10);
+            hmData[xSection][ySection].deaths += parseInt(data[i].died, 10);
+            hmData[xSection][ySection].totalPlace += place;
+
+            xSection = Math.floor(data[i].end_x * 100 / sectionPercent);
+            ySection = Math.floor(data[i].end_y * 100 / sectionPercent);
+
+            deData[xSection][ySection].matches++;
+            deData[xSection][ySection].kills += parseInt(data[i].kills, 10);
+            deData[xSection][ySection].deaths += parseInt(data[i].died, 10);
+            deData[xSection][ySection].totalPlace += place;
+        }
+
+        for (let i = 0; i < sections; i++) {
+            for (let j = 0; j < sections; j++) {
+                if (hmData[i][j].matches > 0) {
+                    let kd = hmData[i][j].deaths > 0 ? hmData[i][j].kills / hmData[i][j].deaths : hmData[i][j].kills;
+                    let place = hmData[i][j].matches > 0 ? hmData[i][j].totalPlace / hmData[i][j].matches * 5 : 0;
+                    killMax = kd > killMax ? kd : killMax;
+                    placeMax = place > placeMax ? place : placeMax;
+                    killHeatmap.push({
+                        x: i * sectionPercent + sectionPercent / 2,
+                        y: j * sectionPercent + sectionPercent / 2,
+                        value: kd
+                    });
+                    placeHeatmap.push({
+                        x: i * sectionPercent + sectionPercent / 2,
+                        y: j * sectionPercent + sectionPercent / 2,
+                        value: place
+                    });
+                }
+            }
+        }
+
+        for (let i = 0; i < sections; i++) {
+            for (let j = 0; j < sections; j++) {
+                if (deData[i][j].matches > 0) {
+                    deathMax = deData[i][j].deaths > deathMax ? deData[i][j].deaths : deathMax;
+                    deathHeatmap.push({
+                        x: i * sectionPercent + sectionPercent / 2,
+                        y: j * sectionPercent + sectionPercent / 2,
+                        value: deData[i][j].deaths
+                    });
+                }
+            }
+        }
+
+        this.setState({
             killHeatmap: killHeatmap,
             placeHeatmap: placeHeatmap,
-            deathHeatmap: deathHeatmap
+            deathHeatmap: deathHeatmap,
+            killMax: killMax,
+            placeMax: placeMax,
+            deathMax: deathMax
         });
     }
 
@@ -431,7 +515,7 @@ class Fortnite extends Component {
                     {this.state.showHeatmap === 'kill' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
                         <div className="heatmap">
                             <img src="/images/map.png"/>
-                            <ReactHeatmap max={5} data={this.state.killHeatmap}/>
+                            <ReactHeatmap data={this.state.killHeatmap} max={this.state.killMax}/>
                         </div>
                     </div>}
                     {this.state.showHeatmap === 'place' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
@@ -443,7 +527,7 @@ class Fortnite extends Component {
                     {this.state.showHeatmap === 'death' && <div className="match-form" onClick={() => this.setState({showHeatmap: false})}>
                         <div className="heatmap">
                             <img src="/images/map.png"/>
-                            <ReactHeatmap max={5} data={this.state.deathHeatmap}/>
+                            <ReactHeatmap max={this.state.deathMax} data={this.state.deathHeatmap}/>
                         </div>
                     </div>}
                     {this.state.form && <div className="match-form" onClick={() => this.setState({form: false})}>
