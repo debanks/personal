@@ -4,6 +4,7 @@ import {Grid, Row, Col, Button} from 'react-bootstrap';
 import DocumentMeta from 'react-document-meta';
 import {ArticleRow as FortniteRow} from './Articles/fortnite-pubg';
 import {ArticleRow as CompetitiveRow} from './Articles/competitive-battleroyale';
+import {ArticleRow as GeneratorRow} from './Articles/web-generator';
 import './index.sass';
 
 class Blog extends Component {
@@ -35,10 +36,13 @@ class Blog extends Component {
                     </div>
                     <Grid className="articles">
                         <Row>
-                            <Col md={4} sm={6} lg={3}>
+                            <Col md={4} sm={6} lg={4}>
+                                <GeneratorRow/>
+                            </Col>
+                            <Col md={4} sm={6} lg={4}>
                                 <CompetitiveRow/>
                             </Col>
-                            <Col md={4} sm={6} lg={3}>
+                            <Col md={4} sm={6} lg={4}>
                                 <FortniteRow/>
                             </Col>
                         </Row>

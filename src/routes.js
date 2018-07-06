@@ -9,6 +9,7 @@ import Blog from './blog';
 import Fortnite from './fortnite';
 import {Article as FortniteArticle} from './blog/Articles/fortnite-pubg';
 import {Article as CompetitiveBattleroyale} from './blog/Articles/competitive-battleroyale';
+import {Article as WebGenerator} from './blog/Articles/web-generator';
 
 if (process.env.NODE_ENV !== 'development') {
     ReactGA.initialize('UA-60146605-1');
@@ -32,6 +33,7 @@ const Routes = (props) => (
             <Route path="/fortnite" component={Fortnite}/>
             <Route path="/blog/fortnite-pubg" component={FortniteArticle}/>
             <Route path="/blog/competitive-battleroyale" component={CompetitiveBattleroyale}/>
+            <Route path="/blog/web-generator" component={WebGenerator}/>
         </Route>
     </Router>
 );
