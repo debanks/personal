@@ -349,7 +349,7 @@ class FortnitePlayer extends Component {
                                         <XAxis dataKey="date"/>
                                         <YAxis/>
                                         <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                                        <Tooltip/>
+                                        <Tooltip formatter={(value) => value.toFixed(2)}/>
                                         <Line type="monotone" dataKey="solo_kd" stroke="#d9534f"/>
                                         <Line type="monotone" dataKey="duo_kd" stroke="#1b6d85"/>
                                         <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c"/>
@@ -362,7 +362,7 @@ class FortnitePlayer extends Component {
                                         <XAxis dataKey="date"/>
                                         <YAxis/>
                                         <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                                        <Tooltip/>
+                                        <Tooltip formatter={(value) => value.toFixed(2)}/>
                                         <Line type="monotone" dataKey="solo_winrate" stroke="#d9534f"/>
                                         <Line type="monotone" dataKey="duo_winrate" stroke="#1b6d85"/>
                                         <Line type="monotone" dataKey="squad_winrate" stroke="#4cae4c"/>
