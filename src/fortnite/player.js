@@ -31,6 +31,12 @@ class FortnitePlayer extends Component {
                 squad_mmr: "0",
                 squad_winrate: "0",
                 squad_kd: "0",
+                solo_rank: "",
+                solo_rank_image: "",
+                duo_rank: "",
+                duo_rank_image: "",
+                squad_rank: "",
+                squad_rank_image: ""
             },
             last24: {
                 solo_matches: "0",
@@ -191,158 +197,157 @@ class FortnitePlayer extends Component {
                     <Grid className="stat-boxes">
                         <Row>
                             <Col sm={4}>
-                                <div className={"stat-box player-boxes " + (this.state.showing === 'overall' ? 'active' : '')}
-                                     onClick={() => this.setState({showing: this.state.showing === 'overall' ? false : 'overall'})}>
-                                    <div className="statbox-title solo">All Time</div>
+                                <div className="rank-box">
+                                    <div className="rank-class">SOLO</div>
                                     <Grid>
                                         <Row>
-                                            <Col xs={6}>Matches</Col>
-                                            <Col xs={6} className="align-right">{matches}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Wins</Col>
-                                            <Col xs={6} className="align-right">{wins}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Win %</Col>
-                                            <Col xs={6} className="align-right">{matches > 0 ? (wins / matches * 100).toFixed(2) : 0.00}%</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>K/D</Col>
-                                            <Col xs={6} className="align-right">{matches > 0 ? (kills / matches).toFixed(2) : kills}</Col>
+                                            <Col sm={6} className="align-center">
+                                                <img src={"/images/ranks/" + this.state.overall.solo_rank_image}/>
+                                                <div className="rank-name">{this.state.overall.solo_rank.toUpperCase()}</div>
+                                            </Col>
+                                            <Col sm={6} className="align-right">
+                                                <div className="rank-label">Matches</div>
+                                                <div className="rank-stat">{this.state.overall.solo_matches}</div>
+                                                <div className="rank-label">K/D</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10)).toFixed(2) : 0.00}</div>
+                                                <div className="rank-label">Win %</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                </div>
+                                            </Col>
                                         </Row>
                                     </Grid>
                                 </div>
                             </Col>
                             <Col sm={4}>
-                                <div className={"stat-box player-boxes " + (this.state.showing === 'lastWeek' ? 'active' : '')}
-                                     onClick={() => this.setState({showing: this.state.showing === 'lastWeek' ? false : 'lastWeek'})}>
-                                    <div className="statbox-title duo">Last Week</div>
+
+                                <div className="rank-box">
+                                    <div className="rank-class">DUO</div>
                                     <Grid>
                                         <Row>
-                                            <Col xs={6}>Matches</Col>
-                                            <Col xs={6} className="align-right">{lastWeekMatches}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Wins</Col>
-                                            <Col xs={6} className="align-right">{lastWeekWins}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Win %</Col>
-                                            <Col xs={6} className="align-right">{lastWeekMatches > 0 ? (lastWeekWins / lastWeekMatches * 100).toFixed(2) : 0.00}%</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>K/D</Col>
-                                            <Col xs={6} className="align-right">{lastWeekMatches > 0 ? (lastWeekKills / lastWeekMatches).toFixed(2) : lastWeekKills}</Col>
+                                            <Col sm={6} className="align-center">
+                                                <img src={"/images/ranks/" + this.state.overall.duo_rank_image}/>
+                                                <div className="rank-name">{this.state.overall.duo_rank.toUpperCase()}</div>
+                                            </Col>
+                                            <Col sm={6} className="align-right">
+                                                <div className="rank-label">Matches</div>
+                                                <div className="rank-stat">{this.state.overall.duo_matches}</div>
+                                                <div className="rank-label">K/D</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}</div>
+                                                <div className="rank-label">Win %</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                </div>
+                                            </Col>
                                         </Row>
                                     </Grid>
                                 </div>
                             </Col>
                             <Col sm={4}>
-                                <div className={"stat-box player-boxes " + (this.state.showing === 'last24' ? 'active' : '')}
-                                     onClick={() => this.setState({showing: this.state.showing === 'last24' ? false : 'last24'})}>
-                                    <div className="statbox-title squad">Last 24 Hours</div>
+
+                                <div className="rank-box">
+                                    <div className="rank-class">SQUAD</div>
                                     <Grid>
                                         <Row>
-                                            <Col xs={6}>Matches</Col>
-                                            <Col xs={6} className="align-right">{last24Matches}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Wins</Col>
-                                            <Col xs={6} className="align-right">{last24Wins}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>Win %</Col>
-                                            <Col xs={6} className="align-right">{last24Matches > 0 ? (last24Wins / last24Matches * 100).toFixed(2) : 0.00}%</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs={6}>K/D</Col>
-                                            <Col xs={6} className="align-right">{last24Matches > 0 ? (last24Kills / last24Matches).toFixed(2) : last24Kills}</Col>
+                                            <Col sm={6} className="align-center">
+                                                <img src={"/images/ranks/" + this.state.overall.squad_rank_image}/>
+                                                <div className="rank-name">{this.state.overall.squad_rank.toUpperCase()}</div>
+                                            </Col>
+                                            <Col sm={6} className="align-right">
+                                                <div className="rank-label">Matches</div>
+                                                <div className="rank-stat">{this.state.overall.squad_matches}</div>
+                                                <div className="rank-label">K/D</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}</div>
+                                                <div className="rank-label">Win %</div>
+                                                <div
+                                                    className="rank-stat">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                </div>
+                                            </Col>
                                         </Row>
                                     </Grid>
                                 </div>
                             </Col>
                         </Row>
-                        {this.state.showing !== false && <Fade in={this.state.showing !== false}>
-                            <Row className="showing">
-                                <Col sm={4}>
-                                    <div className="stat-box">
-                                        <div className="statbox-title solo">Solo</div>
-                                        <Grid>
-                                            <Row>
-                                                <Col xs={6}>Matches</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].solo_matches}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Wins</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].solo_wins}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Win %</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].solo_matches > 0 ? (this.state[this.state.showing].solo_wins / this.state[this.state.showing].solo_matches * 100).toFixed(2) : 0.00}%</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>K/D</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].solo_matches > 0 ? (this.state[this.state.showing].solo_kills / this.state[this.state.showing].solo_matches).toFixed(2) : this.state[this.state.showing].solo_kills}</Col>
-                                            </Row>
-                                        </Grid>
-                                    </div>
-                                </Col>
-                                <Col sm={4}>
-                                    <div className="stat-box">
-                                        <div className="statbox-title duo">Duo</div>
-                                        <Grid>
-                                            <Row>
-                                                <Col xs={6}>Matches</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].duo_matches}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Wins</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].duo_wins}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Win %</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].duo_matches > 0 ? (this.state[this.state.showing].duo_wins / this.state[this.state.showing].duo_matches * 100).toFixed(2) : 0.00}%</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>K/D</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].duo_matches > 0 ? (this.state[this.state.showing].duo_kills / this.state[this.state.showing].duo_matches).toFixed(2) : this.state[this.state.showing].duo_kills}</Col>
-                                            </Row>
-                                        </Grid>
-                                    </div>
-                                </Col>
-                                <Col sm={4}>
-                                    <div className="stat-box">
-                                        <div className="statbox-title squad">Squad</div>
-                                        <Grid>
-                                            <Row>
-                                                <Col xs={6}>Matches</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].squad_matches}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Wins</Col>
-                                                <Col xs={6} className="align-right">{this.state[this.state.showing].squad_wins}</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>Win %</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].squad_matches > 0 ? (this.state[this.state.showing].squad_wins / this.state[this.state.showing].squad_matches * 100).toFixed(2) : 0.00}%</Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={6}>K/D</Col>
-                                                <Col xs={6}
-                                                     className="align-right">{this.state[this.state.showing].squad_matches > 0 ? (this.state[this.state.showing].squad_kills / this.state[this.state.showing].squad_matches).toFixed(2) : this.state[this.state.showing].squad_kills}</Col>
-                                            </Row>
-                                        </Grid>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Fade>}
                         <Row className="charts">
+                            <Col sm={6}>
+                                <div className="recent">
+                                    <div className="recent-title">Last 24 Hours</div>
+                                    <Grid className="recent-stats">
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Solo</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.last24.solo_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.last24.solo_mmr) > 0 ? '+' : ''}{this.state.last24.solo_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_kills, 10) / parseInt(this.state.last24.solo_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_wins, 10) / parseInt(this.state.last24.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Duo</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.last24.duo_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.last24.duo_mmr) > 0 ? '+' : ''}{this.state.last24.duo_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_kills, 10) / parseInt(this.state.last24.duo_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_wins, 10) / parseInt(this.state.last24.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Squad</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.last24.squad_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.last24.squad_mmr) > 0 ? '+' : ''}{this.state.last24.squad_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_kills, 10) / parseInt(this.state.last24.squad_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_wins, 10) / parseInt(this.state.last24.squad_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Grid>
+                                </div>
+                            </Col>
                             <Col sm={6}>
                                 <ResponsiveContainer>
                                     <LineChart data={this.state.charting}>
@@ -353,19 +358,6 @@ class FortnitePlayer extends Component {
                                         <Line type="monotone" dataKey="solo_kd" stroke="#d9534f"/>
                                         <Line type="monotone" dataKey="duo_kd" stroke="#1b6d85"/>
                                         <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c"/>
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </Col>
-                            <Col sm={6}>
-                                <ResponsiveContainer>
-                                    <LineChart data={this.state.charting}>
-                                        <XAxis dataKey="date"/>
-                                        <YAxis/>
-                                        <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                                        <Tooltip formatter={(value) => value.toFixed(2)}/>
-                                        <Line type="monotone" dataKey="solo_winrate" stroke="#d9534f"/>
-                                        <Line type="monotone" dataKey="duo_winrate" stroke="#1b6d85"/>
-                                        <Line type="monotone" dataKey="squad_winrate" stroke="#4cae4c"/>
                                     </LineChart>
                                 </ResponsiveContainer>
                             </Col>
