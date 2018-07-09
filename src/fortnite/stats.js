@@ -93,33 +93,23 @@ class FortniteStats extends Component {
                                             <div className="player-name">{player.name}</div>
                                             <Grid>
                                                 <Row>
-                                                    <Col xs={6}>
-                                                        <div className="fn-label">Solo Win %</div>
-                                                        <div className="fn-stat">{(parseFloat(player.solo_winrate) * 100).toFixed(2)}%</div>
+                                                    <Col xs={4}>
+                                                        <div className="rank-container">
+                                                            <img src={"/images/ranks/" + player.solo_rank_image}/>
+                                                            <div className="fn-label">SOLO</div>
+                                                        </div>
                                                     </Col>
-                                                    <Col xs={6} className="align-right">
-                                                        <div className="fn-label">Solo KD</div>
-                                                        <div className="fn-stat">{parseFloat(player.solo_kd).toFixed(2)}</div>
+                                                    <Col xs={4}>
+                                                        <div className="rank-container">
+                                                            <img src={"/images/ranks/" + player.duo_rank_image}/>
+                                                            <div className="fn-label">DUO</div>
+                                                        </div>
                                                     </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col xs={6}>
-                                                        <div className="fn-label">Duo Win %</div>
-                                                        <div className="fn-stat">{(parseFloat(player.duo_winrate) * 100).toFixed(2)}%</div>
-                                                    </Col>
-                                                    <Col xs={6} className="align-right">
-                                                        <div className="fn-label">Duo KD</div>
-                                                        <div className="fn-stat">{parseFloat(player.duo_kd).toFixed(2)}</div>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col xs={6}>
-                                                        <div className="fn-label">Squad Win %</div>
-                                                        <div className="fn-stat">{(parseFloat(player.squad_winrate) * 100).toFixed(2)}%</div>
-                                                    </Col>
-                                                    <Col xs={6} className="align-right">
-                                                        <div className="fn-label">Squad KD</div>
-                                                        <div className="fn-stat">{parseFloat(player.squad_kd).toFixed(2)}</div>
+                                                    <Col xs={4}>
+                                                        <div className="rank-container">
+                                                            <img src={"/images/ranks/" + player.squad_rank_image}/>
+                                                            <div className="fn-label">SQUAD</div>
+                                                        </div>
                                                     </Col>
                                                 </Row>
                                             </Grid>
