@@ -81,7 +81,10 @@ class FortnitePlayer extends Component {
             },
             charting: [],
             chartType: "kd",
-            showing: false
+            showing: false,
+            solo: true,
+            duo: true,
+            squad: true
         };
 
         fetch('http://api.davisbanks.com/api/stats/' + props.params.name)
@@ -138,6 +141,15 @@ class FortnitePlayer extends Component {
         });
     }
 
+    formatFloat(str, type = 'decimal', places = 2) {
+        let num = (Math.round(parseFloat(str) * 100) / 100).toFixed(2);
+        let formatter = new Intl.NumberFormat('en-US', {
+            style: type,
+            minimumFractionDigits: places
+        });
+        return formatter.format(num);
+    }
+
     render() {
         const {className, content, season, features, width} = this.props;
 
@@ -157,6 +169,7 @@ class FortnitePlayer extends Component {
         let kills = parseInt(this.state.overall.solo_kills, 10) + parseInt(this.state.overall.duo_kills, 10) + parseInt(this.state.overall.squad_kills, 10);
         let wins = parseInt(this.state.overall.solo_wins, 10) + parseInt(this.state.overall.duo_wins, 10) + parseInt(this.state.overall.squad_wins, 10);
 
+
         return (
             <DocumentMeta {...meta}>
                 <div className="Fortnite player">
@@ -170,15 +183,15 @@ class FortnitePlayer extends Component {
                             </Col>
                             <Col sm={3} className="align-right">
                                 <div className="stat-label">Matches</div>
-                                <div className="stat">{matches}</div>
+                                <div className="stat numbers">{this.formatFloat(matches, 'decimal', 0)}</div>
                             </Col>
                             <Col sm={3} className="align-right">
                                 <div className="stat-label">K/D</div>
-                                <div className="stat">{matches > 0 ? (kills / matches).toFixed(2) : kills}</div>
+                                <div className="stat numbers">{matches > 0 ? this.formatFloat((kills / matches), 'decimal', 2) : 0.00}</div>
                             </Col>
                             <Col sm={3} className="align-right">
                                 <div className="stat-label">Win %</div>
-                                <div className="stat">{matches > 0 ? (wins / matches * 100).toFixed(2) : 0.00}%</div>
+                                <div className="stat numbers">{matches > 0 ? this.formatFloat(wins / matches, 'percent', 2) : '0.00%'}</div>
                             </Col>
                         </Row>
                     </Grid>
@@ -186,7 +199,14 @@ class FortnitePlayer extends Component {
                         <Row>
                             <Col sm={4}>
                                 <div className="rank-box">
-                                    <div className="rank-class">SOLO</div>
+                                    <div className="title-container">
+                                        <div className="rank-class solo">
+                                            <div className="rank-content">
+                                                SOLO
+                                            </div>
+                                        </div>
+                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.solo_mmr)}</div>
+                                    </div>
                                     <Grid>
                                         <Row>
                                             <Col sm={6} className="align-center">
@@ -195,13 +215,13 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={6} className="align-right">
                                                 <div className="rank-label">Matches</div>
-                                                <div className="rank-stat">{this.state.overall.solo_matches}</div>
+                                                <div className="rank-stat numbers">{this.formatFloat(this.state.overall.solo_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10)).toFixed(2) : 0.00}</div>
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10), 'decimal', 2) : 0.00}</div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
                                                 </div>
                                             </Col>
                                         </Row>
@@ -211,7 +231,14 @@ class FortnitePlayer extends Component {
                             <Col sm={4}>
 
                                 <div className="rank-box">
-                                    <div className="rank-class">DUO</div>
+                                    <div className="title-container">
+                                        <div className="rank-class duo">
+                                            <div className="rank-content">
+                                                DUO
+                                            </div>
+                                        </div>
+                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.duo_mmr)}</div>
+                                    </div>
                                     <Grid>
                                         <Row>
                                             <Col sm={6} className="align-center">
@@ -220,13 +247,13 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={6} className="align-right">
                                                 <div className="rank-label">Matches</div>
-                                                <div className="rank-stat">{this.state.overall.duo_matches}</div>
+                                                <div className="rank-stat numbers">{this.formatFloat(this.state.overall.duo_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}</div>
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}</div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
                                                 </div>
                                             </Col>
                                         </Row>
@@ -236,7 +263,14 @@ class FortnitePlayer extends Component {
                             <Col sm={4}>
 
                                 <div className="rank-box">
-                                    <div className="rank-class">SQUAD</div>
+                                    <div className="title-container">
+                                        <div className="rank-class squad">
+                                            <div className="rank-content">
+                                                SQUAD
+                                            </div>
+                                        </div>
+                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.squad_mmr)}</div>
+                                    </div>
                                     <Grid>
                                         <Row>
                                             <Col sm={6} className="align-center">
@@ -245,13 +279,13 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={6} className="align-right">
                                                 <div className="rank-label">Matches</div>
-                                                <div className="rank-stat">{this.state.overall.squad_matches}</div>
+                                                <div className="rank-stat numbers">{this.formatFloat(this.state.overall.squad_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}</div>
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}</div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
-                                                    className="rank-stat">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                    className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
                                                 </div>
                                             </Col>
                                         </Row>
@@ -262,8 +296,10 @@ class FortnitePlayer extends Component {
                         <Row style={{"marginTop": "20px"}}>
                             <Col sm={6}>
                                 <div className="recent">
-                                    <div className="recent-title">
-                                        <div className="recent-content">Last 24 Hours</div>
+                                    <div className="title-container">
+                                        <div className="recent-title">
+                                            <div className="recent-content">Last 24 Hours</div>
+                                        </div>
                                     </div>
                                     <Grid className="recent-stats">
                                         <Row>
@@ -272,19 +308,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.last24.solo_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.last24.solo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.solo_mmr) > 0 ? '+' : ''}{this.state.last24.solo_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_kills, 10) / parseInt(this.state.last24.solo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_wins, 10) / parseInt(this.state.last24.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -295,19 +331,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.last24.duo_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.last24.duo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.duo_mmr) > 0 ? '+' : ''}{this.state.last24.duo_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_kills, 10) / parseInt(this.state.last24.duo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_wins, 10) / parseInt(this.state.last24.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -318,19 +354,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.last24.squad_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.last24.squad_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.squad_mmr) > 0 ? '+' : ''}{this.state.last24.squad_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_kills, 10) / parseInt(this.state.last24.squad_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_wins, 10) / parseInt(this.state.last24.squad_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -340,8 +376,10 @@ class FortnitePlayer extends Component {
                             </Col>
                             <Col sm={6}>
                                 <div className="recent">
-                                    <div className="recent-title">
-                                        <div className="recent-content">Last Week</div>
+                                    <div className="title-container">
+                                        <div className="recent-title">
+                                            <div className="recent-content">Last Week</div>
+                                        </div>
                                     </div>
                                     <Grid className="recent-stats">
                                         <Row>
@@ -350,19 +388,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.lastWeek.solo_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.lastWeek.solo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.solo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.solo_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_kills, 10) / parseInt(this.state.lastWeek.solo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_wins, 10) / parseInt(this.state.lastWeek.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -373,19 +411,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.lastWeek.duo_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.lastWeek.duo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.duo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.duo_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_kills, 10) / parseInt(this.state.lastWeek.duo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_wins, 10) / parseInt(this.state.lastWeek.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -396,19 +434,19 @@ class FortnitePlayer extends Component {
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
-                                                <div className={"recent-stat " + (this.state.lastWeek.squad_mmr > 0 ? 'positive' : 'negative')}>
+                                                <div className={"recent-stat numbers " + (this.state.lastWeek.squad_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.squad_mmr) > 0 ? '+' : ''}{this.state.lastWeek.squad_mmr}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_kills, 10) / parseInt(this.state.lastWeek.squad_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
                                             <Col sm={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
-                                                <div className="recent-stat">
+                                                <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_wins, 10) / parseInt(this.state.lastWeek.squad_matches, 10) * 100).toFixed(2) : '0.00'}%
                                                 </div>
                                             </Col>
@@ -430,6 +468,17 @@ class FortnitePlayer extends Component {
                                         <div className={"slant " + (this.state.chartType === 'mmr_diff' ? "active" : "")} onClick={() => this.setState({chartType: 'mmr_diff'})}>
                                             <div className="slant-content">MMR Diff</div>
                                         </div>
+                                        <div className="pull-right">
+                                            <div className={"slant re " + (this.state.solo ? "active" : "")} onClick={() => this.setState({solo: !this.state.solo})}>
+                                                <div className="slant-content">Solo</div>
+                                            </div>
+                                            <div className={"slant re " + (this.state.duo ? "active" : "")} onClick={() => this.setState({duo: !this.state.duo})}>
+                                                <div className="slant-content">Duo</div>
+                                            </div>
+                                            <div className={"slant re " + (this.state.squad ? "active" : "")} onClick={() => this.setState({squad: !this.state.squad})}>
+                                                <div className="slant-content">Squad</div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="chart-container">
                                         <ResponsiveContainer>
@@ -438,15 +487,15 @@ class FortnitePlayer extends Component {
                                                 <YAxis domain={['dataMin', 'dataMax']} tickFormatter={(value) => value.toFixed(2)}/>
                                                 <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
                                                 <Tooltip formatter={(value) => value.toFixed(2)}/>
-                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="solo_kd" stroke="#d9534f" strokeWidth={3}/>}
-                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="duo_kd" stroke="#5badd5" strokeWidth={3}/>}
-                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="solo_mmr" stroke="#d9534f" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="duo_mmr" stroke="#5badd5" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="squad_mmr" stroke="#4cae4c" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="solo_mmr_diff" stroke="#d9534f" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="duo_mmr_diff" stroke="#5badd5" strokeWidth={3}/>}
-                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="squad_mmr_diff" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'kd' && this.state.solo && <Line type="monotone" dataKey="solo_kd" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'kd' && this.state.duo && <Line type="monotone" dataKey="duo_kd" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'kd' && this.state.squad && <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && this.state.solo && <Line type="monotone" dataKey="solo_mmr" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && this.state.duo && <Line type="monotone" dataKey="duo_mmr" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && this.state.squad && <Line type="monotone" dataKey="squad_mmr" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && this.state.solo && <Line type="monotone" dataKey="solo_mmr_diff" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && this.state.duo && <Line type="monotone" dataKey="duo_mmr_diff" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && this.state.squad && <Line type="monotone" dataKey="squad_mmr_diff" stroke="#4cae4c" strokeWidth={3}/>}
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </div>

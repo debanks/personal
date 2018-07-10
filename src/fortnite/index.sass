@@ -1,3 +1,8 @@
+.title-container
+  background: rgba(0,0,0,0.1)
+  overflow: hidden
+  margin-bottom: 30px
+  border-bottom: 1px solid #324b60
 .Fortnite
   padding: 150px 5% 40px 5%
   background: #01182c
@@ -5,12 +10,29 @@
     background: #122b40
     border: 2px solid #324b60
     color: #ffffff
-    padding: 20px
+    overflow: hidden
+    .mmr
+      margin: 12px 20px
+      font-size: 24px
+      font-family: 'Nunito Sans'
+      .mmr-label
+        font-size: 14px
+        color: #b5b5b5
     .rank-class
-      text-align: center
+      padding: 7px 50px 7px 50px
       font-size: 32px
       font-weight: 700
-      margin: 0 0 30px 0
+      display: inline-block
+      margin-left: -30px
+      transform: skewX(-45deg)
+      .rank-content
+        transform: skewX(45deg)
+      &.solo
+        background: rgba(230, 140, 140, 0.5)
+      &.duo
+        background: rgba(40, 140, 230, 0.5)
+      &.squad
+        background: rgba(40, 230, 140, 0.5)
     .rank-label
       font-size: 14px
       color: #b2b2b2
@@ -33,13 +55,13 @@
       padding: 7px 40px 7px 50px
       margin-left: -30px
       font-size: 32px
-      background: rgba(40, 230, 140, 0.5)
+      background: rgba(255, 255, 255, 0.2)
       transform: skewX(-45deg)
       display: inline-block
       .recent-content
         transform: skewX(45deg)
     .recent-stats
-      padding: 20px 35px
+      padding: 0 35px 20px 35px
       .row
         margin-bottom: 3px
         background: rgba(255,255,255,0.2)
@@ -253,10 +275,11 @@
         border: 2px solid #324b60
         background: #122b40
         .chart-options
-          margin-bottom: 20px
-          height: 50px
-          color: #ffffff
+          background: rgba(0,0,0,0.1)
           overflow: hidden
+          border-bottom: 1px solid #324b60
+          margin-bottom: 20px
+          color: #ffffff
           .slant
             padding: 10px 25px
             display: inline-block
@@ -274,6 +297,16 @@
               background: rgba(200,120,70,0.7)
             .slant-content
               transform: skewX(15deg)
+            &.re
+              transform: skewX(15deg)
+              &:first-child
+                margin-left: 0
+                padding-left: 25px
+              &:last-child
+                margin-right: -10px
+                padding-right: 45px
+              .slant-content
+                transform: skewX(-15deg)
         .chart-container
           padding: 0 25px 10px 15px
           height: 300px
@@ -293,24 +326,31 @@
     .player-name
       font-size: 32px
       font-weight: 700
+      padding: 7px 50px 7px 50px
+      display: inline-block
+      margin-left: -30px
+      transform: skewX(-45deg)
       background: rgba(255,255,255,0.1)
-      padding: 5px 10px
-      text-align: center
+      .player-content
+        transform: skewX(45deg)
+    .title-container
+      margin-bottom: 0
     .rank-container
-      padding: 20px
+      padding: 0 20px
     .fn-label
       text-align: center
       font-size: 24px
       font-weight: 700
+      margin-top: 5px
     img
       max-width: 100%
     .container
-      .col-xs-6
+      .col-xs-4
+        padding: 20px 15px
+        &:not(:last-child)
+          border-right: 1px solid #324b60
         &.align-right
-          border: 0px
-        .fn-label
-          font-size: 14px
-          color: #b4b4b4
+          border: 0
         .fn-stat
           font-size: 28px
 .ranks

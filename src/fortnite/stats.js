@@ -89,7 +89,11 @@ class FortniteStats extends Component {
                                 return <Col md={4}>
                                     <a key={key} href={"/fortnite-stats/" + player.name}>
                                         <div className="player">
-                                            <div className="player-name">{player.name}</div>
+                                            <div className="title-container">
+                                                <div className="player-name">
+                                                    <div className="player-content">{player.name}</div>
+                                                </div>
+                                            </div>
                                             <Grid>
                                                 <Row>
                                                     <Col xs={4}>
