@@ -84,7 +84,36 @@ class FortnitePlayer extends Component {
             showing: false,
             solo: true,
             duo: true,
-            squad: true
+            squad: true,
+            mmr: {
+                solo: {
+                    current: 0,
+                    start: 0,
+                    end: 100,
+                    start_rank: 'Common 1',
+                    end_rank: 'Common 2',
+                    start_rank_image: 'common_1.png',
+                    end_rank_image: 'common_2.png'
+                },
+                duo: {
+                    current: 0,
+                    start: 0,
+                    end: 100,
+                    start_rank: 'Common 1',
+                    end_rank: 'Common 2',
+                    start_rank_image: 'common_1.png',
+                    end_rank_image: 'common_2.png'
+                },
+                squad: {
+                    current: 0,
+                    start: 0,
+                    end: 100,
+                    start_rank: 'Common 1',
+                    end_rank: 'Common 2',
+                    start_rank_image: 'common_1.png',
+                    end_rank_image: 'common_2.png'
+                }
+            }
         };
 
         fetch('http://api.davisbanks.com/api/stats/' + props.params.name)
@@ -133,11 +162,87 @@ class FortnitePlayer extends Component {
             })
         }
 
+        let mmr = {
+            solo: {
+                current: parseFloat(data.overall.solo_mmr),
+                start: 0,
+                end: 100,
+                start_rank: 'Common 1',
+                end_rank: 'Common 2',
+                start_rank_image: 'common_1.png',
+                end_rank_image: 'common_2.png'
+            },
+            duo: {
+                current: parseFloat(data.overall.duo_mmr),
+                start: 0,
+                end: 100,
+                start_rank: 'Common 1',
+                end_rank: 'Common 2',
+                start_rank_image: 'common_1.png',
+                end_rank_image: 'common_2.png'
+            },
+            squad: {
+                current: parseFloat(data.overall.squad_mmr),
+                start: 0,
+                end: 100,
+                start_rank: 'Common 1',
+                end_rank: 'Common 2',
+                start_rank_image: 'common_1.png',
+                end_rank_image: 'common_2.png'
+            }
+        };
+
+        for (let i = 0; i < data.ranks.length; i++) {
+            
+            if (mmr.solo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.solo.current <= parseFloat(data.ranks[i].mmr_end)) {
+                mmr.solo.start = parseFloat(data.ranks[i].mmr_start);
+                mmr.solo.start_rank = data.ranks[i].rank;
+                mmr.solo.start_rank_image = data.ranks[i].image;
+                mmr.solo.end = parseFloat(data.ranks[i].mmr_end);
+                if (i === data.ranks.length - 1) {
+                    mmr.solo.end_rank = data.ranks[i].rank;
+                    mmr.solo.end_rank_image = data.ranks[i].image;
+                } else {
+                    mmr.solo.end_rank = data.ranks[i+1].rank;
+                    mmr.solo.end_rank_image = data.ranks[i+1].image;
+                }
+            }
+
+            if (mmr.duo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.duo.current <= parseFloat(data.ranks[i].mmr_end)) {
+                mmr.duo.start = parseFloat(data.ranks[i].mmr_start);
+                mmr.duo.start_rank = data.ranks[i].rank;
+                mmr.duo.start_rank_image = data.ranks[i].image;
+                mmr.duo.end = parseFloat(data.ranks[i].mmr_end);
+                if (i === data.ranks.length - 1) {
+                    mmr.duo.end_rank = data.ranks[i].rank;
+                    mmr.duo.end_rank_image = data.ranks[i].image;
+                } else {
+                    mmr.duo.end_rank = data.ranks[i+1].rank;
+                    mmr.duo.end_rank_image = data.ranks[i+1].image;
+                }
+            }
+
+            if (mmr.squad.current >= parseFloat(data.ranks[i].mmr_start) && mmr.squad.current <= parseFloat(data.ranks[i].mmr_end)) {
+                mmr.squad.start = parseFloat(data.ranks[i].mmr_start);
+                mmr.squad.start_rank = data.ranks[i].rank;
+                mmr.squad.start_rank_image = data.ranks[i].image;
+                mmr.squad.end = parseFloat(data.ranks[i].mmr_end);
+                if (i === data.ranks.length - 1) {
+                    mmr.squad.end_rank = data.ranks[i].rank;
+                    mmr.squad.end_rank_image = data.ranks[i].image;
+                } else {
+                    mmr.squad.end_rank = data.ranks[i+1].rank;
+                    mmr.squad.end_rank_image = data.ranks[i+1].image;
+                }
+            }
+        }
+
         this.setState({
             overall: data.overall,
             last24: data.last24[0],
             lastWeek: data.lastWeek[0],
-            charting: charting
+            charting: charting,
+            mmr: mmr
         });
     }
 
@@ -168,7 +273,7 @@ class FortnitePlayer extends Component {
         let matches = parseInt(this.state.overall.solo_matches, 10) + parseInt(this.state.overall.duo_matches, 10) + parseInt(this.state.overall.squad_matches, 10);
         let kills = parseInt(this.state.overall.solo_kills, 10) + parseInt(this.state.overall.duo_kills, 10) + parseInt(this.state.overall.squad_kills, 10);
         let wins = parseInt(this.state.overall.solo_wins, 10) + parseInt(this.state.overall.duo_wins, 10) + parseInt(this.state.overall.squad_wins, 10);
-
+        let mmr = this.state.mmr;
 
         return (
             <DocumentMeta {...meta}>
@@ -226,6 +331,15 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                     </Grid>
+                                    <div className="rank-bar">
+                                        <div className="rank-images">
+                                            <img src={"/images/ranks/" + this.state.mmr.solo.start_rank_image} className="start-image" title={mmr.solo.start_rank}/>
+                                            <img src={"/images/ranks/" + this.state.mmr.solo.end_rank_image} className="end-image" title={mmr.solo.end_rank}/>
+                                        </div>
+                                        <div className="bar" title={this.formatFloat(mmr.solo.current.toFixed(2), 'decimal', 2) + ' / ' + this.formatFloat(mmr.solo.end.toFixed(2), 'decimal', 0)}>
+                                            <div className="fill" style={{width: ((mmr.solo.current - mmr.solo.start) / (mmr.solo.end - mmr.solo.start) * 100) + '%'}}></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </Col>
                             <Col sm={4}>
@@ -258,6 +372,15 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                     </Grid>
+                                    <div className="rank-bar">
+                                        <div className="rank-images">
+                                            <img src={"/images/ranks/" + this.state.mmr.duo.start_rank_image} className="start-image" title={mmr.duo.start_rank}/>
+                                            <img src={"/images/ranks/" + this.state.mmr.duo.end_rank_image} className="end-image" title={mmr.duo.end_rank}/>
+                                        </div>
+                                        <div className="bar" title={this.formatFloat(mmr.duo.current.toFixed(2), 'decimal', 2) + ' / ' + this.formatFloat(mmr.duo.end.toFixed(2), 'decimal', 0)}>
+                                            <div className="fill" style={{width: ((mmr.duo.current - mmr.duo.start) / (mmr.duo.end - mmr.duo.start) * 100) + '%'}}></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </Col>
                             <Col sm={4}>
@@ -290,6 +413,15 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                     </Grid>
+                                    <div className="rank-bar">
+                                        <div className="rank-images">
+                                            <img src={"/images/ranks/" + this.state.mmr.squad.start_rank_image} className="start-image" title={mmr.squad.start_rank}/>
+                                            <img src={"/images/ranks/" + this.state.mmr.squad.end_rank_image} className="end-image" title={mmr.squad.end_rank}/>
+                                        </div>
+                                        <div className="bar" title={this.formatFloat(mmr.squad.current.toFixed(2), 'decimal', 2) + ' / ' + this.formatFloat(mmr.squad.end.toFixed(2), 'decimal', 0)}>
+                                            <div className="fill" style={{width: ((mmr.squad.current - mmr.squad.start) / (mmr.squad.end - mmr.squad.start) * 100) + '%'}}></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </Col>
                         </Row>
