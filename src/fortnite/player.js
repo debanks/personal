@@ -271,7 +271,7 @@ class FortnitePlayer extends Component {
                                 </div>
                             </Col>
                         </Row>
-                        <Row className="charts">
+                        <Row style={{"marginTop": "20px"}}>
                             <Col sm={6}>
                                 <div className="recent">
                                     <div className="recent-title">Last 24 Hours</div>
@@ -349,17 +349,97 @@ class FortnitePlayer extends Component {
                                 </div>
                             </Col>
                             <Col sm={6}>
-                                <ResponsiveContainer>
-                                    <LineChart data={this.state.charting}>
-                                        <XAxis dataKey="date"/>
-                                        <YAxis/>
-                                        <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                                        <Tooltip formatter={(value) => value.toFixed(2)}/>
-                                        <Line type="monotone" dataKey="solo_kd" stroke="#d9534f"/>
-                                        <Line type="monotone" dataKey="duo_kd" stroke="#1b6d85"/>
-                                        <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c"/>
-                                    </LineChart>
-                                </ResponsiveContainer>
+                                <div className="recent">
+                                    <div className="recent-title">Last Week</div>
+                                    <Grid className="recent-stats">
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Solo</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.lastWeek.solo_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.lastWeek.solo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.solo_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_kills, 10) / parseInt(this.state.lastWeek.solo_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_wins, 10) / parseInt(this.state.lastWeek.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Duo</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.lastWeek.duo_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.lastWeek.duo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.duo_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_kills, 10) / parseInt(this.state.lastWeek.duo_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_wins, 10) / parseInt(this.state.lastWeek.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col sm={3}>
+                                                <div className="recent-full">Squad</div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">MMR</div>
+                                                <div className={"recent-stat " + (this.state.lastWeek.squad_mmr > 0 ? 'positive' : 'negative')}>
+                                                    {parseFloat(this.state.lastWeek.squad_mmr) > 0 ? '+' : ''}{this.state.lastWeek.squad_mmr}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">K/D</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_kills, 10) / parseInt(this.state.lastWeek.squad_matches, 10)).toFixed(2) : '0.00'}
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} className="align-right">
+                                                <div className="recent-label">Win %</div>
+                                                <div className="recent-stat">
+                                                    {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_wins, 10) / parseInt(this.state.lastWeek.squad_matches, 10) * 100).toFixed(2) : '0.00'}%
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Grid>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row className="charts">
+                            <Col sm={12}>
+                                <div className="chart-cont">
+                                    <ResponsiveContainer>
+                                        <LineChart data={this.state.charting}>
+                                            <XAxis dataKey="date"/>
+                                            <YAxis/>
+                                            <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+                                            <Tooltip formatter={(value) => value.toFixed(2)}/>
+                                            <Line type="monotone" dataKey="solo_kd" stroke="#d9534f" strokeWidth={3}/>
+                                            <Line type="monotone" dataKey="duo_kd" stroke="#5badd5" strokeWidth={3}/>
+                                            <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c" strokeWidth={3}/>
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
                             </Col>
                         </Row>
                     </Grid>

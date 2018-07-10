@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import FaBullseye from 'react-icons/lib/fa/bullseye';
 import FaMapPin from 'react-icons/lib/fa/map-marker';
 import FaClose from 'react-icons/lib/fa/close';
-import FaCircle from 'react-icons/lib/fa/circle';
+import FaArrow from 'react-icons/lib/fa/arrow-left';
 import LineTo from 'react-lineto';
 import ReactHeatmap from 'react-heatmap';
 import './index.sass';
@@ -83,7 +83,6 @@ class FortniteStats extends Component {
         return (
             <DocumentMeta {...meta}>
                 <div className="FortniteStats">
-
                     <Grid className="players">
                         <Row>
                             {this.state.players.map(function (player, key) {
