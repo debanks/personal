@@ -27,9 +27,17 @@
   .recent
     background: #122b40
     color: #ffffff
+    border: 2px solid #324b60
+    overflow: hidden
     .recent-title
-      padding: 7px 20px
+      padding: 7px 40px 7px 50px
+      margin-left: -30px
       font-size: 32px
+      background: rgba(40, 230, 140, 0.5)
+      transform: skewX(-45deg)
+      display: inline-block
+      .recent-content
+        transform: skewX(45deg)
     .recent-stats
       padding: 20px 35px
       .row
@@ -38,13 +46,13 @@
         .col-sm-3
           padding: 5px 10px
           .recent-full
-            font-size: 36px
+            font-size: 32px
           .recent-label
             font-size: 14px
             color: #b3b3b3
           .recent-stat
-            font-size: 28px
-            line-height: 28px
+            font-size: 24px
+            line-height: 24px
             &.positive
               color: #4cae4c
             &.negative
@@ -242,9 +250,33 @@
       stroke: #ffffff
     .col-sm-12
       .chart-cont
-        height: 300px
-        padding: 30px 25px 10px 15px
+        border: 2px solid #324b60
         background: #122b40
+        .chart-options
+          margin-bottom: 20px
+          height: 50px
+          color: #ffffff
+          overflow: hidden
+          .slant
+            padding: 10px 25px
+            display: inline-block
+            font-size: 18px
+            background: rgba(255,255,255,0.1)
+            cursor: pointer
+            transform: skewX(-15deg)
+            margin-right: 3px
+            &:first-child
+              margin-left: -10px
+              padding-left: 45px
+            &:hover
+              background: rgba(255,255,255,0.2)
+            &.active
+              background: rgba(200,120,70,0.7)
+            .slant-content
+              transform: skewX(15deg)
+        .chart-container
+          padding: 0 25px 10px 15px
+          height: 300px
 .FortniteStats
   background: #01182c
   padding: 70px 0 40px 0
@@ -261,7 +293,7 @@
     .player-name
       font-size: 32px
       font-weight: 700
-      background: rgba(255,255,255,0.2)
+      background: rgba(255,255,255,0.1)
       padding: 5px 10px
       text-align: center
     .rank-container
@@ -273,11 +305,7 @@
     img
       max-width: 100%
     .container
-      .row
-        border-bottom: 1px solid #888888
       .col-xs-6
-        padding: 10px 20px
-        border-right: 1px solid #888888
         &.align-right
           border: 0px
         .fn-label
@@ -285,4 +313,7 @@
           color: #b4b4b4
         .fn-stat
           font-size: 28px
+.ranks
+  img
+    width: 75px
 

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import classnames from 'classnames';
 import {Grid, Row, Col, Button, DropdownButton, MenuItem, ButtonGroup, Fade} from 'react-bootstrap';
 import DocumentMeta from 'react-document-meta';
+import FaCaretLeft from 'react-icons/lib/fa/angle-left';
 import {LineChart, XAxis, YAxis, CartesianGrid, Line, Tooltip, ResponsiveContainer} from 'recharts';
 import './index.sass';
 
@@ -79,6 +80,7 @@ class FortnitePlayer extends Component {
                 squad_kd: "0",
             },
             charting: [],
+            chartType: "kd",
             showing: false
         };
 
@@ -92,9 +94,25 @@ class FortnitePlayer extends Component {
     processData(data) {
 
         let charting = [];
+        let mmrStart = {
+            solo_mmr: parseFloat(data.overall.solo_mmr),
+            duo_mmr: parseFloat(data.overall.duo_mmr),
+            squad_mmr: parseFloat(data.overall.squad_mmr)
+        };
+
+        for (let i = data.charting.length - 1; i >= 0; i--) {
+            mmrStart.solo_mmr -= parseFloat(data.charting[i].solo_mmr);
+            mmrStart.duo_mmr -= parseFloat(data.charting[i].duo_mmr);
+            mmrStart.squad_mmr -= parseFloat(data.charting[i].squad_mmr);
+        }
 
         for (let key in data.charting) {
             let date = new Date(data.charting[key].created_at.replace(/-/g, '/') + ' UTC');
+
+            mmrStart.solo_mmr += parseFloat(data.charting[key].solo_mmr);
+            mmrStart.duo_mmr += parseFloat(data.charting[key].duo_mmr);
+            mmrStart.squad_mmr += parseFloat(data.charting[key].squad_mmr);
+
             charting.push({
                 date: ('0' + date.getMonth().toString()).slice(-2) + '/' + ('0' + date.getDate().toString()).slice(-2) + ' ' + ('0' + date.getHours().toString()).slice(-2) + ':00',
                 solo_kd: data.charting[key].solo_kd == "0.000" ? null : parseFloat(data.charting[key].solo_kd),
@@ -103,6 +121,12 @@ class FortnitePlayer extends Component {
                 solo_winrate: data.charting[key].solo_winrate == "0.000" ? null : parseFloat(data.charting[key].solo_winrate) * 100,
                 duo_winrate: data.charting[key].duo_winrate == "0.000" ? null : parseFloat(data.charting[key].duo_winrate) * 100,
                 squad_winrate: data.charting[key].squad_winrate == "0.000" ? null : parseFloat(data.charting[key].squad_winrate) * 100,
+                solo_mmr: mmrStart.solo_mmr,
+                duo_mmr: mmrStart.duo_mmr,
+                squad_mmr: mmrStart.squad_mmr,
+                solo_mmr_diff: parseFloat(data.charting[key].solo_mmr),
+                duo_mmr_diff: parseFloat(data.charting[key].duo_mmr),
+                squad_mmr_diff: parseFloat(data.charting[key].squad_mmr)
             })
         }
 
@@ -112,35 +136,6 @@ class FortnitePlayer extends Component {
             lastWeek: data.lastWeek[0],
             charting: charting
         });
-    }
-
-    formatTimeString(timeString) {
-        let time = new Date(timeString.replace(/-/g, '/') + ' UTC');
-        let unix = time.getTime() / 1000;
-        let now = Date.now() / 1000;
-        let diff = now - unix;
-
-        let interval = Math.floor(diff / 2592000);
-        if (interval > 1) {
-            return timeString;
-        }
-
-        interval = Math.floor(diff / 86400);
-        if (interval > 0) {
-            return interval > 1 ? interval + " days ago" : interval + " day ago";
-        }
-
-        interval = Math.floor(diff / 3600);
-        if (interval > 0) {
-            return interval > 1 ? interval + " hours ago" : interval + " hour ago";
-        }
-
-        interval = Math.floor(diff / 60);
-        if (interval > 0) {
-            return interval > 1 ? interval + " minutes ago" : interval + " minute ago";
-        }
-
-        return "Now";
     }
 
     render() {
@@ -158,19 +153,9 @@ class FortnitePlayer extends Component {
             }
         };
 
-        let overall = this.state.overall;
-
         let matches = parseInt(this.state.overall.solo_matches, 10) + parseInt(this.state.overall.duo_matches, 10) + parseInt(this.state.overall.squad_matches, 10);
         let kills = parseInt(this.state.overall.solo_kills, 10) + parseInt(this.state.overall.duo_kills, 10) + parseInt(this.state.overall.squad_kills, 10);
         let wins = parseInt(this.state.overall.solo_wins, 10) + parseInt(this.state.overall.duo_wins, 10) + parseInt(this.state.overall.squad_wins, 10);
-
-        let last24Matches = parseInt(this.state.last24.solo_matches, 10) + parseInt(this.state.last24.duo_matches, 10) + parseInt(this.state.last24.squad_matches, 10);
-        let last24Kills = parseInt(this.state.last24.solo_kills, 10) + parseInt(this.state.last24.duo_kills, 10) + parseInt(this.state.last24.squad_kills, 10);
-        let last24Wins = parseInt(this.state.last24.solo_wins, 10) + parseInt(this.state.last24.duo_wins, 10) + parseInt(this.state.last24.squad_wins, 10);
-
-        let lastWeekMatches = parseInt(this.state.lastWeek.solo_matches, 10) + parseInt(this.state.lastWeek.duo_matches, 10) + parseInt(this.state.lastWeek.squad_matches, 10);
-        let lastWeekKills = parseInt(this.state.lastWeek.solo_kills, 10) + parseInt(this.state.lastWeek.duo_kills, 10) + parseInt(this.state.lastWeek.squad_kills, 10);
-        let lastWeekWins = parseInt(this.state.lastWeek.solo_wins, 10) + parseInt(this.state.lastWeek.duo_wins, 10) + parseInt(this.state.lastWeek.squad_wins, 10);
 
         return (
             <DocumentMeta {...meta}>
@@ -178,7 +163,10 @@ class FortnitePlayer extends Component {
                     <Grid>
                         <Row className="top-bar">
                             <Col sm={3}>
-                                <div className="name">{this.props.params.name}</div>
+                                <div className="name">
+                                    <a href="/fortnite-stats" className="back-arrow"><FaCaretLeft/></a>
+                                    {this.props.params.name}
+                                </div>
                             </Col>
                             <Col sm={3} className="align-right">
                                 <div className="stat-label">Matches</div>
@@ -274,7 +262,9 @@ class FortnitePlayer extends Component {
                         <Row style={{"marginTop": "20px"}}>
                             <Col sm={6}>
                                 <div className="recent">
-                                    <div className="recent-title">Last 24 Hours</div>
+                                    <div className="recent-title">
+                                        <div className="recent-content">Last 24 Hours</div>
+                                    </div>
                                     <Grid className="recent-stats">
                                         <Row>
                                             <Col sm={3}>
@@ -350,7 +340,9 @@ class FortnitePlayer extends Component {
                             </Col>
                             <Col sm={6}>
                                 <div className="recent">
-                                    <div className="recent-title">Last Week</div>
+                                    <div className="recent-title">
+                                        <div className="recent-content">Last Week</div>
+                                    </div>
                                     <Grid className="recent-stats">
                                         <Row>
                                             <Col sm={3}>
@@ -428,17 +420,36 @@ class FortnitePlayer extends Component {
                         <Row className="charts">
                             <Col sm={12}>
                                 <div className="chart-cont">
-                                    <ResponsiveContainer>
-                                        <LineChart data={this.state.charting}>
-                                            <XAxis dataKey="date"/>
-                                            <YAxis/>
-                                            <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                                            <Tooltip formatter={(value) => value.toFixed(2)}/>
-                                            <Line type="monotone" dataKey="solo_kd" stroke="#d9534f" strokeWidth={3}/>
-                                            <Line type="monotone" dataKey="duo_kd" stroke="#5badd5" strokeWidth={3}/>
-                                            <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c" strokeWidth={3}/>
-                                        </LineChart>
-                                    </ResponsiveContainer>
+                                    <div className="chart-options">
+                                        <div className={"slant " + (this.state.chartType === 'kd' ? "active" : "")} onClick={() => this.setState({chartType: 'kd'})}>
+                                            <div className="slant-content">K/D</div>
+                                        </div>
+                                        <div className={"slant " + (this.state.chartType === 'mmr' ? "active" : "")} onClick={() => this.setState({chartType: 'mmr'})}>
+                                            <div className="slant-content">MMR</div>
+                                        </div>
+                                        <div className={"slant " + (this.state.chartType === 'mmr_diff' ? "active" : "")} onClick={() => this.setState({chartType: 'mmr_diff'})}>
+                                            <div className="slant-content">MMR Diff</div>
+                                        </div>
+                                    </div>
+                                    <div className="chart-container">
+                                        <ResponsiveContainer>
+                                            <LineChart data={this.state.charting}>
+                                                <XAxis dataKey="date"/>
+                                                <YAxis domain={['dataMin', 'dataMax']} tickFormatter={(value) => value.toFixed(2)}/>
+                                                <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+                                                <Tooltip formatter={(value) => value.toFixed(2)}/>
+                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="solo_kd" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="duo_kd" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'kd' && <Line type="monotone" dataKey="squad_kd" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="solo_mmr" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="duo_mmr" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr' && <Line type="monotone" dataKey="squad_mmr" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="solo_mmr_diff" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="duo_mmr_diff" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'mmr_diff' && <Line type="monotone" dataKey="squad_mmr_diff" stroke="#4cae4c" strokeWidth={3}/>}
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
                                 </div>
                             </Col>
                         </Row>
