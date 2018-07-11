@@ -194,7 +194,7 @@ class FortnitePlayer extends Component {
 
         for (let i = 0; i < data.ranks.length; i++) {
             
-            if (mmr.solo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.solo.current <= parseFloat(data.ranks[i].mmr_end)) {
+            if (mmr.solo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.solo.current < parseFloat(data.ranks[i].mmr_end)) {
                 mmr.solo.start = parseFloat(data.ranks[i].mmr_start);
                 mmr.solo.start_rank = data.ranks[i].rank;
                 mmr.solo.start_rank_image = data.ranks[i].image;
@@ -208,7 +208,7 @@ class FortnitePlayer extends Component {
                 }
             }
 
-            if (mmr.duo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.duo.current <= parseFloat(data.ranks[i].mmr_end)) {
+            if (mmr.duo.current >= parseFloat(data.ranks[i].mmr_start) && mmr.duo.current < parseFloat(data.ranks[i].mmr_end)) {
                 mmr.duo.start = parseFloat(data.ranks[i].mmr_start);
                 mmr.duo.start_rank = data.ranks[i].rank;
                 mmr.duo.start_rank_image = data.ranks[i].image;
@@ -222,7 +222,7 @@ class FortnitePlayer extends Component {
                 }
             }
 
-            if (mmr.squad.current >= parseFloat(data.ranks[i].mmr_start) && mmr.squad.current <= parseFloat(data.ranks[i].mmr_end)) {
+            if (mmr.squad.current >= parseFloat(data.ranks[i].mmr_start) && mmr.squad.current < parseFloat(data.ranks[i].mmr_end)) {
                 mmr.squad.start = parseFloat(data.ranks[i].mmr_start);
                 mmr.squad.start_rank = data.ranks[i].rank;
                 mmr.squad.start_rank_image = data.ranks[i].image;
