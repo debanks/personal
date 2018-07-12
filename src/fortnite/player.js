@@ -158,7 +158,10 @@ class FortnitePlayer extends Component {
                 squad_mmr: mmrStart.squad_mmr,
                 solo_mmr_diff: parseFloat(data.charting[key].solo_mmr),
                 duo_mmr_diff: parseFloat(data.charting[key].duo_mmr),
-                squad_mmr_diff: parseFloat(data.charting[key].squad_mmr)
+                squad_mmr_diff: parseFloat(data.charting[key].squad_mmr),
+                solo_score: parseFloat(data.charting[key].solo_score_match),
+                duo_score: parseFloat(data.charting[key].duo_score_match),
+                squad_score: parseFloat(data.charting[key].squad_score_match)
             })
         }
 
@@ -328,6 +331,10 @@ class FortnitePlayer extends Component {
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
                                                 </div>
+                                                <div className="rank-label">Score</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_score, 10) / parseInt(this.state.overall.solo_matches, 10)).toFixed(2) : 0.00}
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Grid>
@@ -369,6 +376,10 @@ class FortnitePlayer extends Component {
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
                                                 </div>
+                                                <div className="rank-label">Score</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_score, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Grid>
@@ -409,6 +420,10 @@ class FortnitePlayer extends Component {
                                                 <div className="rank-label">Win %</div>
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                </div>
+                                                <div className="rank-label">Score</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_score, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}
                                                 </div>
                                             </Col>
                                         </Row>
@@ -600,6 +615,9 @@ class FortnitePlayer extends Component {
                                         <div className={"slant " + (this.state.chartType === 'mmr_diff' ? "active" : "")} onClick={() => this.setState({chartType: 'mmr_diff'})}>
                                             <div className="slant-content">MMR Diff</div>
                                         </div>
+                                        <div className={"slant " + (this.state.chartType === 'score' ? "active" : "")} onClick={() => this.setState({chartType: 'score'})}>
+                                            <div className="slant-content">Score</div>
+                                        </div>
                                         <div className="pull-right">
                                             <div className={"slant re " + (this.state.solo ? "active" : "")} onClick={() => this.setState({solo: !this.state.solo})}>
                                                 <div className="slant-content">Solo</div>
@@ -628,6 +646,9 @@ class FortnitePlayer extends Component {
                                                 {this.state.chartType === 'mmr_diff' && this.state.solo && <Line type="monotone" dataKey="solo_mmr_diff" stroke="#d9534f" strokeWidth={3}/>}
                                                 {this.state.chartType === 'mmr_diff' && this.state.duo && <Line type="monotone" dataKey="duo_mmr_diff" stroke="#5badd5" strokeWidth={3}/>}
                                                 {this.state.chartType === 'mmr_diff' && this.state.squad && <Line type="monotone" dataKey="squad_mmr_diff" stroke="#4cae4c" strokeWidth={3}/>}
+                                                {this.state.chartType === 'score' && this.state.solo && <Line type="monotone" dataKey="solo_score" stroke="#d9534f" strokeWidth={3}/>}
+                                                {this.state.chartType === 'score' && this.state.duo && <Line type="monotone" dataKey="duo_score" stroke="#5badd5" strokeWidth={3}/>}
+                                                {this.state.chartType === 'score' && this.state.squad && <Line type="monotone" dataKey="squad_score" stroke="#4cae4c" strokeWidth={3}/>}
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </div>

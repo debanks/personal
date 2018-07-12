@@ -100,18 +100,27 @@ class FortniteStats extends Component {
                                                         <div className="rank-container">
                                                             <img src={"/images/ranks/" + player.solo_rank_image}/>
                                                             <div className="fn-label">SOLO</div>
+                                                            <div className={"fn-diff " + (parseFloat(player.recent_solo_mmr) > 0 ? 'green' : 'red')}>
+                                                                {parseFloat(player.recent_solo_mmr) > 0 ? '+' : ''}{parseFloat(player.recent_solo_mmr)}
+                                                            </div>
                                                         </div>
                                                     </Col>
                                                     <Col xs={4}>
                                                         <div className="rank-container">
                                                             <img src={"/images/ranks/" + player.duo_rank_image}/>
                                                             <div className="fn-label">DUO</div>
+                                                            <div className={"fn-diff " + (parseFloat(player.recent_duo_mmr) > 0 ? 'green' : 'red')}>
+                                                                {parseFloat(player.recent_duo_mmr) > 0 ? '+' : ''}{parseFloat(player.recent_duo_mmr)}
+                                                            </div>
                                                         </div>
                                                     </Col>
                                                     <Col xs={4}>
                                                         <div className="rank-container">
                                                             <img src={"/images/ranks/" + player.squad_rank_image}/>
                                                             <div className="fn-label">SQUAD</div>
+                                                            <div className={"fn-diff " + (parseFloat(player.recent_squad_mmr) > 0 ? 'green' : 'red')}>
+                                                                {parseFloat(player.recent_squad_mmr) > 0 ? '+' : ''}{parseFloat(player.recent_squad_mmr)}
+                                                            </div>
                                                         </div>
                                                     </Col>
                                                 </Row>
