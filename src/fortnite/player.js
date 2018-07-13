@@ -283,21 +283,21 @@ class FortnitePlayer extends Component {
                 <div className="Fortnite player">
                     <Grid>
                         <Row className="top-bar">
-                            <Col sm={3}>
+                            <Col sm={3} xs={9}>
                                 <div className="name">
                                     <a href="/fortnite-stats" className="back-arrow"><FaCaretLeft/></a>
                                     {this.props.params.name}
                                 </div>
                             </Col>
-                            <Col sm={3} className="align-right">
+                            <Col sm={3} xsHidden className="align-right">
                                 <div className="stat-label">Matches</div>
                                 <div className="stat numbers">{this.formatFloat(matches, 'decimal', 0)}</div>
                             </Col>
-                            <Col sm={3} className="align-right">
+                            <Col sm={3} xs={3} className="align-right">
                                 <div className="stat-label">K/D</div>
                                 <div className="stat numbers">{matches > 0 ? this.formatFloat((kills / matches), 'decimal', 2) : 0.00}</div>
                             </Col>
-                            <Col sm={3} className="align-right">
+                            <Col sm={3} xsHidden className="align-right">
                                 <div className="stat-label">Win %</div>
                                 <div className="stat numbers">{matches > 0 ? this.formatFloat(wins / matches, 'percent', 2) : '0.00%'}</div>
                             </Col>
@@ -313,20 +313,21 @@ class FortnitePlayer extends Component {
                                                 SOLO
                                             </div>
                                         </div>
-                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.solo_mmr)}</div>
+                                        <div className="pull-right mmr mobile-hidden"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.solo_mmr)}</div>
                                     </div>
                                     <Grid>
                                         <Row>
-                                            <Col sm={6} className="align-center">
+                                            <Col sm={6} xsHidden className="align-center">
                                                 <img src={"/images/ranks/" + this.state.overall.solo_rank_image}/>
                                                 <div className="rank-name">{this.state.overall.solo_rank.toUpperCase()}</div>
                                             </Col>
-                                            <Col sm={6} className="align-right">
+                                            <Col sm={6} xsHidden className="align-right">
                                                 <div className="rank-label">Matches</div>
                                                 <div className="rank-stat numbers">{this.formatFloat(this.state.overall.solo_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
-                                                <div
-                                                    className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10), 'decimal', 2) : 0.00}</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.solo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10), 'decimal', 2) : 0.00}
+                                                    </div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
@@ -335,6 +336,46 @@ class FortnitePlayer extends Component {
                                                 <div className="rank-stat numbers">
                                                     {parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_score, 10) / parseInt(this.state.overall.solo_matches, 10)).toFixed(2) : 0.00}
                                                 </div>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="border-bottom">
+                                                <h3>{this.state.overall.solo_rank.toUpperCase()}</h3>
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={5}>
+                                                            <img src={"/images/ranks/" + this.state.overall.solo_rank_image}/>
+                                                        </Col>
+                                                        <Col xs={7} className="align-right">
+                                                            <div className="rank-label">MMR</div>
+                                                            <div className="rank-stat numbers">
+                                                                {this.formatFloat(this.state.overall.solo_mmr)}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="mobile-stats">
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={6}>
+                                                            <div className="rank-label">Matches</div>
+                                                            <div className="rank-stat numbers">{this.formatFloat(this.state.overall.solo_matches, 'decimal', 0)}</div>
+                                                            <div className="rank-label">K/D</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.solo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.solo_kills, 10) / parseInt(this.state.overall.solo_matches, 10), 'decimal', 2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                        <Col xs={6} className="align-right">
+                                                            <div className="rank-label">Win %</div>
+                                                            <div
+                                                                className="rank-stat numbers">{parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_wins, 10) / parseInt(this.state.overall.solo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                            </div>
+                                                            <div className="rank-label">Score</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.solo_matches, 10) > 0 ? (parseInt(this.state.overall.solo_score, 10) / parseInt(this.state.overall.solo_matches, 10)).toFixed(2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
                                             </Col>
                                         </Row>
                                     </Grid>
@@ -350,7 +391,6 @@ class FortnitePlayer extends Component {
                                 </div>
                             </Col>
                             <Col sm={4}>
-
                                 <div className="rank-box">
                                     <div className="title-container">
                                         <div className="rank-class duo">
@@ -358,20 +398,21 @@ class FortnitePlayer extends Component {
                                                 DUO
                                             </div>
                                         </div>
-                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.duo_mmr)}</div>
+                                        <div className="pull-right mmr mobile-hidden"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.duo_mmr)}</div>
                                     </div>
                                     <Grid>
                                         <Row>
-                                            <Col sm={6} className="align-center">
+                                            <Col sm={6} xsHidden className="align-center">
                                                 <img src={"/images/ranks/" + this.state.overall.duo_rank_image}/>
                                                 <div className="rank-name">{this.state.overall.duo_rank.toUpperCase()}</div>
                                             </Col>
-                                            <Col sm={6} className="align-right">
+                                            <Col sm={6} xsHidden className="align-right">
                                                 <div className="rank-label">Matches</div>
                                                 <div className="rank-stat numbers">{this.formatFloat(this.state.overall.duo_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
-                                                <div
-                                                    className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.duo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10), 'decimal', 2) : 0.00}
+                                                </div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
@@ -380,6 +421,46 @@ class FortnitePlayer extends Component {
                                                 <div className="rank-stat numbers">
                                                     {parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_score, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}
                                                 </div>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="border-bottom">
+                                                <h3>{this.state.overall.duo_rank.toUpperCase()}</h3>
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={5}>
+                                                            <img src={"/images/ranks/" + this.state.overall.duo_rank_image}/>
+                                                        </Col>
+                                                        <Col xs={7} className="align-right">
+                                                            <div className="rank-label">MMR</div>
+                                                            <div className="rank-stat numbers">
+                                                                {this.formatFloat(this.state.overall.duo_mmr)}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="mobile-stats">
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={6}>
+                                                            <div className="rank-label">Matches</div>
+                                                            <div className="rank-stat numbers">{this.formatFloat(this.state.overall.duo_matches, 'decimal', 0)}</div>
+                                                            <div className="rank-label">K/D</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.duo_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.duo_kills, 10) / parseInt(this.state.overall.duo_matches, 10), 'decimal', 2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                        <Col xs={6} className="align-right">
+                                                            <div className="rank-label">Win %</div>
+                                                            <div
+                                                                className="rank-stat numbers">{parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_wins, 10) / parseInt(this.state.overall.duo_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                            </div>
+                                                            <div className="rank-label">Score</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.duo_matches, 10) > 0 ? (parseInt(this.state.overall.duo_score, 10) / parseInt(this.state.overall.duo_matches, 10)).toFixed(2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
                                             </Col>
                                         </Row>
                                     </Grid>
@@ -395,7 +476,6 @@ class FortnitePlayer extends Component {
                                 </div>
                             </Col>
                             <Col sm={4}>
-
                                 <div className="rank-box">
                                     <div className="title-container">
                                         <div className="rank-class squad">
@@ -403,20 +483,21 @@ class FortnitePlayer extends Component {
                                                 SQUAD
                                             </div>
                                         </div>
-                                        <div className="pull-right mmr"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.squad_mmr)}</div>
+                                        <div className="pull-right mmr mobile-hidden"><span className="mmr-label">MMR:</span> {this.formatFloat(this.state.overall.squad_mmr)}</div>
                                     </div>
                                     <Grid>
                                         <Row>
-                                            <Col sm={6} className="align-center">
+                                            <Col sm={6} xsHidden className="align-center">
                                                 <img src={"/images/ranks/" + this.state.overall.squad_rank_image}/>
                                                 <div className="rank-name">{this.state.overall.squad_rank.toUpperCase()}</div>
                                             </Col>
-                                            <Col sm={6} className="align-right">
+                                            <Col sm={6} xsHidden className="align-right">
                                                 <div className="rank-label">Matches</div>
                                                 <div className="rank-stat numbers">{this.formatFloat(this.state.overall.squad_matches, 'decimal', 0)}</div>
                                                 <div className="rank-label">K/D</div>
-                                                <div
-                                                    className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}</div>
+                                                <div className="rank-stat numbers">
+                                                    {parseInt(this.state.overall.squad_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10), 'decimal', 2) : 0.00}
+                                                </div>
                                                 <div className="rank-label">Win %</div>
                                                 <div
                                                     className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
@@ -425,6 +506,46 @@ class FortnitePlayer extends Component {
                                                 <div className="rank-stat numbers">
                                                     {parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_score, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}
                                                 </div>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="border-bottom">
+                                                <h3>{this.state.overall.squad_rank.toUpperCase()}</h3>
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={5}>
+                                                            <img src={"/images/ranks/" + this.state.overall.squad_rank_image}/>
+                                                        </Col>
+                                                        <Col xs={7} className="align-right">
+                                                            <div className="rank-label">MMR</div>
+                                                            <div className="rank-stat numbers">
+                                                                {this.formatFloat(this.state.overall.squad_mmr)}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
+                                            </Col>
+                                            <Col xs={12} smHidden mdHidden lgHidden className="mobile-stats">
+                                                <Grid>
+                                                    <Row>
+                                                        <Col xs={6}>
+                                                            <div className="rank-label">Matches</div>
+                                                            <div className="rank-stat numbers">{this.formatFloat(this.state.overall.squad_matches, 'decimal', 0)}</div>
+                                                            <div className="rank-label">K/D</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.squad_matches, 10) > 0 ? this.formatFloat(parseInt(this.state.overall.squad_kills, 10) / parseInt(this.state.overall.squad_matches, 10), 'decimal', 2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                        <Col xs={6} className="align-right">
+                                                            <div className="rank-label">Win %</div>
+                                                            <div
+                                                                className="rank-stat numbers">{parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_wins, 10) / parseInt(this.state.overall.squad_matches, 10) * 100).toFixed(2) : 0.00}%
+                                                            </div>
+                                                            <div className="rank-label">Score</div>
+                                                            <div className="rank-stat numbers">
+                                                                {parseInt(this.state.overall.squad_matches, 10) > 0 ? (parseInt(this.state.overall.squad_score, 10) / parseInt(this.state.overall.squad_matches, 10)).toFixed(2) : 0.00}
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Grid>
                                             </Col>
                                         </Row>
                                     </Grid>
@@ -450,22 +571,22 @@ class FortnitePlayer extends Component {
                                     </div>
                                     <Grid className="recent-stats">
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Solo</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.last24.solo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.solo_mmr) > 0 ? '+' : ''}{this.state.last24.solo_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_kills, 10) / parseInt(this.state.last24.solo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.solo_matches, 10) > 0 ? (parseInt(this.state.last24.solo_wins, 10) / parseInt(this.state.last24.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
@@ -473,22 +594,22 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Duo</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.last24.duo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.duo_mmr) > 0 ? '+' : ''}{this.state.last24.duo_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_kills, 10) / parseInt(this.state.last24.duo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.duo_matches, 10) > 0 ? (parseInt(this.state.last24.duo_wins, 10) / parseInt(this.state.last24.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
@@ -496,22 +617,22 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Squad</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.last24.squad_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.last24.squad_mmr) > 0 ? '+' : ''}{this.state.last24.squad_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_kills, 10) / parseInt(this.state.last24.squad_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.last24.squad_matches, 10) > 0 ? (parseInt(this.state.last24.squad_wins, 10) / parseInt(this.state.last24.squad_matches, 10) * 100).toFixed(2) : '0.00'}%
@@ -530,22 +651,22 @@ class FortnitePlayer extends Component {
                                     </div>
                                     <Grid className="recent-stats">
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Solo</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.lastWeek.solo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.solo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.solo_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_kills, 10) / parseInt(this.state.lastWeek.solo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.solo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.solo_wins, 10) / parseInt(this.state.lastWeek.solo_matches, 10) * 100).toFixed(2) : '0.00'}%
@@ -553,22 +674,22 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Duo</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.lastWeek.duo_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.duo_mmr) > 0 ? '+' : ''}{this.state.lastWeek.duo_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_kills, 10) / parseInt(this.state.lastWeek.duo_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.duo_matches, 10) > 0 ? (parseInt(this.state.lastWeek.duo_wins, 10) / parseInt(this.state.lastWeek.duo_matches, 10) * 100).toFixed(2) : '0.00'}%
@@ -576,22 +697,22 @@ class FortnitePlayer extends Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col sm={3}>
+                                            <Col xs={3}>
                                                 <div className="recent-full">Squad</div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">MMR</div>
                                                 <div className={"recent-stat numbers " + (this.state.lastWeek.squad_mmr > 0 ? 'positive' : 'negative')}>
                                                     {parseFloat(this.state.lastWeek.squad_mmr) > 0 ? '+' : ''}{this.state.lastWeek.squad_mmr}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">K/D</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_kills, 10) / parseInt(this.state.lastWeek.squad_matches, 10)).toFixed(2) : '0.00'}
                                                 </div>
                                             </Col>
-                                            <Col sm={3} className="align-right">
+                                            <Col xs={3} className="align-right">
                                                 <div className="recent-label">Win %</div>
                                                 <div className="recent-stat numbers">
                                                     {parseInt(this.state.lastWeek.squad_matches, 10) > 0 ? (parseInt(this.state.lastWeek.squad_wins, 10) / parseInt(this.state.lastWeek.squad_matches, 10) * 100).toFixed(2) : '0.00'}%

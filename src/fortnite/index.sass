@@ -3,6 +3,9 @@
   overflow: hidden
   margin-bottom: 30px
   border-bottom: 1px solid #324b60
+.mobile-hidden
+  @media only screen and (max-width: 768px)
+    display: none
 .Fortnite
   padding: 150px 5% 40px 5%
   background: #01182c
@@ -11,6 +14,7 @@
     border: 2px solid #324b60
     color: #ffffff
     overflow: hidden
+    margin-bottom: 10px
     .mmr
       margin: 12px 20px
       font-size: 24px
@@ -35,6 +39,19 @@
       font-size: 32px
       line-height: 32px
       margin-bottom: 10px
+    .border-bottom
+      border-bottom: 1px solid #324b60
+      padding-bottom: 20px
+      h3
+        margin: 0 auto 15px auto
+        text-align: center
+        font-size: 32px
+      .rank-label
+        margin-top: 10px
+      .col-xs-6
+        padding: 0
+    .mobile-stats
+      padding-top: 20px
     img
       max-width: 100%
     .rank-name
@@ -60,7 +77,7 @@
       .row
         margin-bottom: 3px
         background: rgba(255,255,255,0.2)
-        .col-sm-3
+        .col-xs-3
           padding: 5px 10px
           .recent-full
             font-size: 32px
@@ -74,6 +91,22 @@
               color: #4cae4c
             &.negative
               color: #d9534f
+    @media only screen and (max-width: 768px)
+      margin-bottom: 5px
+      .recent-title
+        font-size: 28px
+      .recent-stats
+        padding: 0 25px 20px 25px
+        .row
+          .col-xs-3
+            padding: 5px 5px
+            .recent-full
+              font-size: 24px
+              line-height: 40px
+            .recent-label
+              font-size: 12px
+            .recent-stat
+              font-size: 16px
   .stat-boxes
     padding: 0
     margin-bottom: 20px
@@ -302,9 +335,28 @@
                 padding-right: 45px
               .slant-content
                 transform: skewX(-15deg)
+          @media only screen and (max-width: 768px)
+            .slant
+              padding: 7px 12px
+              &:first-child
+                margin-left: -10px
+                padding-left: 25px
+            .pull-right
+              display: block
+              margin-top: 10px
+              .slant
+                font-size: 14px
+                &:first-child
+                  margin-left: 0
+                  padding-left: 25px
+                &:last-child
+                  margin-right: -10px
+                  padding-right: 25px
         .chart-container
           padding: 0 25px 10px 15px
           height: 300px
+          @media only screen and (max-width: 768px)
+            padding: 0 10px 10px 0
   .rank-bar
     background: rgba(0,0,0,0.2)
     padding: 15px 0 20px 0
@@ -379,6 +431,9 @@
           border: 0
         .fn-stat
           font-size: 28px
+    @media only screen and (max-width: 768px)
+      .rank-container
+        padding: 0
 .ranks
   img
     width: 75px
