@@ -20,7 +20,7 @@ class FortniteStats extends Component {
             players: []
         };
 
-        fetch('http://api.davisbanks.com/api/stats')
+        fetch('http://api.fortnite.davisbanks.com/api/stats')
             .then((res) => res.json())
             .then((data) => this.processData(data));
 

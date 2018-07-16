@@ -116,7 +116,7 @@ class FortnitePlayer extends Component {
             }
         };
 
-        fetch('http://api.davisbanks.com/api/stats/' + props.params.name)
+        fetch('http://api.fortnite.davisbanks.com/api/stats/' + props.params.name)
             .then((res) => res.json())
             .then((data) => this.processData(data));
 

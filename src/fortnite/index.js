@@ -61,7 +61,7 @@ class Fortnite extends Component {
             deathMax: 1000
         };
 
-        fetch('http://api.davisbanks.com/api/fortnite')
+        fetch('http://api.fortnite.davisbanks.com/api/fortnite')
             .then((res) => res.json())
             .then((data) => this.processData(data));
 
@@ -342,7 +342,7 @@ class Fortnite extends Component {
 
     submit(event) {
         event.preventDefault();
-        fetch('http://api.davisbanks.com/api/fortnite', {
+        fetch('http://api.fortnite.davisbanks.com/api/fortnite', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
