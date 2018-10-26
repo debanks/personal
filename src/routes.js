@@ -6,9 +6,6 @@ import App from './app';
 import Home from './home';
 import ReactGA from 'react-ga';
 import Blog from './blog';
-import Fortnite from './fortnite';
-import FortniteStats from './fortnite/stats';
-import FortnitePlayer from './fortnite/player';
 import {Article as FortniteArticle} from './blog/Articles/fortnite-pubg';
 import {Article as CompetitiveBattleroyale} from './blog/Articles/competitive-battleroyale';
 import {Article as WebGenerator} from './blog/Articles/web-generator';
@@ -32,9 +29,6 @@ const Routes = (props) => (
         <Route component={App}>
             <Route path="/" component={Home}/>
             <Route path="/blog" component={Blog}/>
-            <Route path="/fortnite" component={Fortnite}/>
-            <Route path="/fortnite-stats" component={FortniteStats}/>
-            <Route path="/fortnite-stats/:name" component={FortnitePlayer}/>
             <Route path="/blog/fortnite-pubg" component={FortniteArticle}/>
             <Route path="/blog/competitive-battleroyale" component={CompetitiveBattleroyale}/>
             <Route path="/blog/web-generator" component={WebGenerator}/>

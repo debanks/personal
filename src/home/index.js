@@ -195,6 +195,48 @@ class Home extends Component {
                             <h2>PROJECTS</h2>
                             <div className="projects">
                                 <div className="project"
+                                     onClick={() => this.setState({project: this.state.project === 'fortnite-analytics' ? null : 'fortnite-analytics'})}>
+                                    <div className="project-top">
+                                        <img className="project-icon" src="/images/fa.png"/>
+                                        <Grid className="inline-grid">
+                                            <Row>
+                                                <Col xs={8} sm={6} className="title">Fortnite Analytics</Col>
+                                                <Col sm={3} xsHidden className="align-right">
+                                                    <div className="info-label">Platform</div>
+                                                    <div className="info-value">Web</div>
+                                                </Col>
+                                                <Col xs={4} sm={3} className="align-right">
+                                                    <div className="info-label">Language</div>
+                                                    <div className="info-value">ReactJS, PHP</div>
+                                                </Col>
+                                            </Row>
+                                        </Grid>
+                                    </div>
+                                    <Collapse in={this.state.project === 'fortnite-analytics'}>
+                                        <div>
+                                            <Grid className="project-content">
+                                                <Row>
+                                                    <Col md={4} className="align-center">
+                                                        <img src="/images/fortniteanalytics.png"/>
+                                                    </Col>
+                                                    <Col md={8}>
+                                                        Fortnite Analytics was a pet project to track my groups analytics in Fortnite. This was a way for me
+                                                        to mess around with the analytics provided by Epic and manipulate/collect it in better more informative
+                                                        ways.
+                                                        <div className="buttons">
+                                                            <Button bsStyle="primary" href="http://fortniteanalytics.com"><FaLink/> Website</Button>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Grid>
+                                        </div>
+                                    </Collapse>
+                                    <div className="project-toggle">
+                                        {this.state.project !== 'fortnite-analytics' && <FaArrowDown/>}
+                                        {this.state.project === 'fortnite-analytics' && <FaArrowUp/>}
+                                    </div>
+                                </div>
+                                <div className="project"
                                      onClick={() => this.setState({project: this.state.project === 'trader-life' ? null : 'trader-life'})}>
                                     <div className="project-top">
                                         <img className="project-icon" src="/images/transparentx96.png"/>
