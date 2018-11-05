@@ -195,6 +195,91 @@ class Home extends Component {
                             <h2>PROJECTS</h2>
                             <div className="projects">
                                 <div className="project"
+                                     onClick={() => this.setState({project: this.state.project === 'mtg' ? null : 'mtg'})}>
+                                    <div className="project-top">
+                                        <img className="project-icon" style={{width: 'auto', height: '50px', marginLeft: '10px'}} src="/images/mtg.png"/>
+                                        <Grid className="inline-grid">
+                                            <Row>
+                                                <Col xs={8} sm={6} className="title">MTG: Arena Helper</Col>
+                                                <Col sm={3} xsHidden className="align-right">
+                                                    <div className="info-label">Platform</div>
+                                                    <div className="info-value">Web</div>
+                                                </Col>
+                                                <Col xs={4} sm={3} className="align-right">
+                                                    <div className="info-label">Language</div>
+                                                    <div className="info-value">ReactJS, PHP</div>
+                                                </Col>
+                                            </Row>
+                                        </Grid>
+                                    </div>
+                                    <Collapse in={this.state.project === 'mtg'}>
+                                        <div>
+                                            <Grid className="project-content">
+                                                <Row>
+                                                    <Col md={4} className="align-center">
+                                                        <img src="/images/mtg-ss.png"/>
+                                                    </Col>
+                                                    <Col md={8}>
+                                                        Magic the Gathering: Arena Helper is a side pet project that aims to help new players
+                                                        get into Magic the Gathering: Arena. Mostly this exists because I find Magic interesting
+                                                        and the resources for magic lacking. It has some very complicated UI work in the draft
+                                                        and build, with a good search engine for new cards.
+                                                        <div className="buttons">
+                                                            <Button bsStyle="primary" href="http://mtg.davisbanks.com"><FaLink/> Website</Button>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Grid>
+                                        </div>
+                                    </Collapse>
+                                    <div className="project-toggle">
+                                        {this.state.project !== 'mtg' && <FaArrowDown/>}
+                                        {this.state.project === 'mtg' && <FaArrowUp/>}
+                                    </div>
+                                </div>
+                                <div className="project"
+                                     onClick={() => this.setState({project: this.state.project === 'bo4-analytics' ? null : 'bo4-analytics'})}>
+                                    <div className="project-top">
+                                        <img className="project-icon" src="/images/bo4.png"/>
+                                        <Grid className="inline-grid">
+                                            <Row>
+                                                <Col xs={8} sm={6} className="title">BO4 Analytics</Col>
+                                                <Col sm={3} xsHidden className="align-right">
+                                                    <div className="info-label">Platform</div>
+                                                    <div className="info-value">Web</div>
+                                                </Col>
+                                                <Col xs={4} sm={3} className="align-right">
+                                                    <div className="info-label">Language</div>
+                                                    <div className="info-value">ReactJS, PHP</div>
+                                                </Col>
+                                            </Row>
+                                        </Grid>
+                                    </div>
+                                    <Collapse in={this.state.project === 'bo4-analytics'}>
+                                        <div>
+                                            <Grid className="project-content">
+                                                <Row>
+                                                    <Col md={4} className="align-center">
+                                                        <img src="/images/bo4-ss.png"/>
+                                                    </Col>
+                                                    <Col md={8}>
+                                                        BO4 Analytics was a pet project to track my groups analytics in Call of Duty: Black Ops 4. This was a way for me
+                                                        to mess around with the analytics provided by Activision and manipulate/collect it in better more informative
+                                                        ways.
+                                                        <div className="buttons">
+                                                            <Button bsStyle="primary" href="http://bo4analytics.com"><FaLink/> Website</Button>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Grid>
+                                        </div>
+                                    </Collapse>
+                                    <div className="project-toggle">
+                                        {this.state.project !== 'bo4-analytics' && <FaArrowDown/>}
+                                        {this.state.project === 'bo4-analytics' && <FaArrowUp/>}
+                                    </div>
+                                </div>
+                                <div className="project"
                                      onClick={() => this.setState({project: this.state.project === 'fortnite-analytics' ? null : 'fortnite-analytics'})}>
                                     <div className="project-top">
                                         <img className="project-icon" src="/images/fa.png"/>
