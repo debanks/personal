@@ -226,6 +226,8 @@ class Home extends Component {
                                                         and build, with a good search engine for new cards.
                                                         <div className="buttons">
                                                             <Button bsStyle="primary" href="http://mtg.davisbanks.com"><FaLink/> Website</Button>
+                                                            <Button href="https://github.com/debanks/mtg-backend"><FaGithub/> Backend</Button>
+                                                            <Button href="https://github.com/debanks/mtg-frontend"><FaGithub/> Frontend</Button>
                                                         </div>
                                                     </Col>
                                                 </Row>
